@@ -16,7 +16,13 @@
     "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
     "isemail": "^3.2.0",
-    "sequelize": "^6.3.5",
-    "sqlite3": "^5.0.0"
+    "sequelize": "^4.39.0",
+    "sqlite3": "^4.0.3"
+  },
+  "devDependencies": {
+    "apollo-link": "^1.2.3",
+    "apollo-link-http": "^1.5.5",
+    "nock": "^10.0.2",
+    "node-fetch": "^2.2.1"
   }
 }

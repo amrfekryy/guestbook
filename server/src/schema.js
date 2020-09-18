@@ -46,6 +46,7 @@ const typeDefs = gql`
   ## queries ##
 
   type Query {
+    test: String
     me: User
     guestbooks: [Guestbook]! # for all users
     guestbook(id: ID!): Guestbook # one guestbook
@@ -58,32 +59,32 @@ const typeDefs = gql`
     signup(email: String, password: String): String
     login(email: String, password: String): String # return login token
     
-    addGuestbook: addEntityResponse!
+    addGuestbook(title: String): addEntityResponse!
 
-    addMessage(guestbookId: ID!): addEntityResponse!
-    updateMessage(messageId: ID!): mutateEntityResponse!
-    deleteMessage(messageId: ID!): mutateEntityResponse!
+    # addMessage(guestbookId: ID!): addEntityResponse!
+    # updateMessage(messageId: ID!): mutateEntityResponse!
+    # deleteMessage(messageId: ID!): mutateEntityResponse!
 
-    addReply(messageId: ID!): addEntityResponse!
-    updateReply(replyId: ID!): mutateEntityResponse!
-    deleteReply(replyId: ID!): mutateEntityResponse!
+    # addReply(messageId: ID!): addEntityResponse!
+    # updateReply(replyId: ID!): mutateEntityResponse!
+    # deleteReply(replyId: ID!): mutateEntityResponse!
 
   }
   
   type addEntityResponse {
     success: Boolean!
-    message: String
-    guestbooks: [Guestbooks]
+    resMessage: String
+    guestbooks: [Guestbook]
     messages: [Message]
     replies: [Reply]
   }  
 
-  type mutateEntityResponse {
-    success: Boolean!
-    message: String
-    message: Message
-    reply: Reply
-  }
+  # type mutateEntityResponse {
+  #   success: Boolean!
+  #   resMessage: String
+  #   message: Message
+  #   reply: Reply
+  # }
 `;
 
 module.exports = typeDefs;
