@@ -28,19 +28,19 @@ const typeDefs = gql`
   
   type Message {
     id: ID!
+    body: String!
+    replies: [Reply]! 
     user: User
     guest: Guest
-    body: String!
-    time: String!
-    replies: [Reply]! 
+    # time: String!
   }
   
   type Reply {
     id: ID!
-    user: User
-    # guest: Guest
     body: String!
-    time: String!
+    user: User!
+    # guest: Guest
+    # time: String!
   }
   
   ## queries ##
