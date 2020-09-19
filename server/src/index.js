@@ -34,7 +34,11 @@ const server = new ApolloServer({
     // launchAPI: new LaunchAPI(),
     userAPI: new UserAPI({ store }), 
   }),
-
+  engine: {    
+    reportSchema: true,
+    variant: "current",
+    graphVariant: "current",    
+  }
 });
 
 server.listen().then(({ url }) => {
