@@ -1,4 +1,4 @@
-const { NoUnusedVariablesRule } = require('graphql');
+// const { NoUnusedVariablesRule } = require('graphql');
 const SQL = require('sequelize');
 
 module.exports.createStore = () => {

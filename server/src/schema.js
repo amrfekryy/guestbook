@@ -56,53 +56,42 @@ const typeDefs = gql`
 
   type Mutation {
     
-    signup(name: String, email: String, password: String): authResponse
-    login(email: String, password: String): authResponse
+    signup(name: String, email: String, password: String): Response!
+    login(email: String, password: String): Response!
 
-    addGuestbook(title: String): addEntityResponse!
+    addGuestbook(title: String): Response!
 
     addMessage(
       guestbookId: ID!
       body: String!
       guestName: String
       guestEmail: String
-    ): addEntityResponse!
+    ): Response!
     
     addReply(
       messageId: ID! 
       body: String!
-    ): addEntityResponse!
+    ): Response!
     
-    # updateMessage(messageId: ID!): mutateEntityResponse!
-    # deleteMessage(messageId: ID!): mutateEntityResponse!
+    updateMessage(messageId: ID! body: String!): Response!
+    updateReply(replyId: ID! body: String!): Response!
+    deleteMessage(messageId: ID!): Response!
+    deleteReply(replyId: ID!): Response!
 
-    # updateReply(replyId: ID!): mutateEntityResponse!
-    # deleteReply(replyId: ID!): mutateEntityResponse!
-
-  }
-
-  type authResponse {
-    success: Boolean!
-    resMessage: String
-    token: String
   }
   
-  type addEntityResponse {
+  type Response {
     success: Boolean!
     resMessage: String
     guestbook: Guestbook
     guestbooks: [Guestbook]
     message: Message
     messages: [Message]
+    reply: Reply
     replies: [Reply]
+    token: String
   }  
 
-  # type mutateEntityResponse {
-  #   success: Boolean!
-  #   resMessage: String
-  #   message: Message
-  #   reply: Reply
-  # }
 `;
 
 module.exports = typeDefs;
