@@ -26,9 +26,8 @@ class UserAPI extends DataSource {
     if (!isEmail.validate(email))
       return {...response, resMessage: 'Email is invalid'};
     let user = await this.store.users.findOne({ where: { email } });
-    if (user)
+    if (user && user.dataValues && user.dataValues.password)
       return {...response, resMessage: 'Email already exists'};
-    
     
     user = await this.store.users.create({ name, email, password });
     return {...response, success: true}
@@ -60,25 +59,61 @@ class UserAPI extends DataSource {
     return {...response, success: true, token}
   }
 
-  async addGuestbook(data) {
-    // const userId = this.context.user.id;
-    // if (!userId) return;
+  notLoggedIn() {
     const response = {
       success: false,
-      resMessage: '',
-      guestbooks: [],
+      resMessage: 'You are not logged in',
     }
-    if (!this.context || !this.context.user.id) return {...response, resMessage: 'You are not logged in'}
-    const guestbook = await this.store.guestbooks.create({...data, userId: this.context.user.id})
-    const guestbooks = await this.store.guestbooks.findAll()
-    return {...response, success: true, guestbooks}
+    let youAreNot = true
+    if (this.context && this.context.user && this.context.user.id)
+      youAreNot = false
+    
+    return { response, youAreNot }
   }
 
-  async addMessage() {}
+  async addGuestbook(args) {
+    const { response, youAreNot } = this.notLoggedIn()
+    if (youAreNot) return response
+
+    const guestbook = await this.store.guestbooks.create({...args, userId: this.context.user.id})
+    const guestbooks = await this.store.guestbooks.findAll()
+    return { success: true, guestbook, guestbooks }
+  }
+
+  async addMessage({ guestbookId, body, guestName, guestEmail }) {
+    const { response, youAreNot } = this.notLoggedIn()
+    
+    const messageAuthor = { guestId: null, userId: null}
+    if (youAreNot) {
+      const guest = await this.store.guests.create({ name: guestName, email: guestEmail })
+      messageAuthor.guestId = guest.dataValues.id
+    } else {
+      messageAuthor.userId = this.context.user.id
+    }
+
+    const message = await this.store.messages.create({
+      guestbookId, body, ...messageAuthor
+    })
+    const guestbook = await this.store.guestbooks.findByPk(guestbookId);
+    return { success: true, message, guestbook }
+  }
+  
+  async addReply({messageId, body}) {
+    const { response, youAreNot } = this.notLoggedIn()
+    if (youAreNot) return response
+
+    const reply = await this.store.replies.create({
+      messageId, body,
+      userId: this.context.user.id
+    })
+    const message = await this.store.messages.findByPk(messageId);
+    const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
+    return { success: true, reply, message, guestbook }
+  }
+
   async updateMessage({ messageId }) {}
   async deleteMessage({ messageId }) {}
 
-  async addReply() {}
   async updateReply({ replyId }) {}
   async deleteReply({ replyId }) {}
 

@@ -35,6 +35,18 @@ module.exports.createStore = () => {
     password: SQL.STRING,
   });
 
+  const guests = db.define('guest', {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    createdAt: SQL.DATE,
+    updatedAt: SQL.DATE,
+    name: SQL.STRING,
+    email: SQL.STRING,
+  });
+
   const guestbooks = db.define('guestbook', {
     id: {
       type: SQL.INTEGER,
@@ -57,6 +69,7 @@ module.exports.createStore = () => {
     updatedAt: SQL.DATE,
     body: SQL.STRING,
     userId: SQL.INTEGER,
+    guestId: SQL.INTEGER,
     guestbookId: SQL.INTEGER,
   });
 
@@ -74,11 +87,12 @@ module.exports.createStore = () => {
   });
 
   // register models
-  // guestbooks.sync({force: true})
+  // guestbooks.sync({force: true}) // drops table
   users.sync()
+  guests.sync()
   guestbooks.sync()
   messages.sync()
   replies.sync()
 
-  return { users, guestbooks, messages, replies };
+  return { users, guests, guestbooks, messages, replies };
 };

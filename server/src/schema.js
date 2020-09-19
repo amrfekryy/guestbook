@@ -23,13 +23,13 @@ const typeDefs = gql`
   type Guestbook {
     id: ID!
     title: String!
-    messages: [Message]!
+    messages: [Message]
   }
   
   type Message {
     id: ID!
     body: String!
-    replies: [Reply]! 
+    replies: [Reply]!
     user: User
     guest: Guest
     # time: String!
@@ -61,11 +61,21 @@ const typeDefs = gql`
 
     addGuestbook(title: String): addEntityResponse!
 
-    # addMessage(guestbookId: ID!): addEntityResponse!
+    addMessage(
+      guestbookId: ID!
+      body: String!
+      guestName: String
+      guestEmail: String
+    ): addEntityResponse!
+    
+    addReply(
+      messageId: ID! 
+      body: String!
+    ): addEntityResponse!
+    
     # updateMessage(messageId: ID!): mutateEntityResponse!
     # deleteMessage(messageId: ID!): mutateEntityResponse!
 
-    # addReply(messageId: ID!): addEntityResponse!
     # updateReply(replyId: ID!): mutateEntityResponse!
     # deleteReply(replyId: ID!): mutateEntityResponse!
 
@@ -80,7 +90,9 @@ const typeDefs = gql`
   type addEntityResponse {
     success: Boolean!
     resMessage: String
+    guestbook: Guestbook
     guestbooks: [Guestbook]
+    message: Message
     messages: [Message]
     replies: [Reply]
   }  

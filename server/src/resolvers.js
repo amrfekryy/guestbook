@@ -13,6 +13,10 @@ module.exports = {
       await dataSources.userAPI.login(args),
     addGuestbook: async (_, args, { dataSources }) =>
       await dataSources.userAPI.addGuestbook(args),
+    addMessage: async (_, args, { dataSources }) =>
+    await dataSources.userAPI.addMessage(args),
+    addReply: async (_, args, { dataSources }) =>
+      await dataSources.userAPI.addReply(args),
     
     // bookTrips: async (_, { launchIds }, { dataSources }) => {
     //   const results = await dataSources.userAPI.bookTrips({ launchIds });
