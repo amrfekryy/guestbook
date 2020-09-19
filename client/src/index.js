@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from "@apollo/client";
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import Pages from "./pages";
+import Pages from "./pages";
 // import './index.css';
 // import App from './App';
 // import * as serviceWorker from './serviceWorker';
@@ -26,12 +26,12 @@ const client = new ApolloClient({
 // }).then(result => console.log(result));
 
 
-// ReactDOM.render(
-//   <ApolloProvider client={client}>
-//     <Pages />
-//   </ApolloProvider>,
-//   document.getElementById("root")
-// );
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <Pages />
+  </ApolloProvider>,
+  document.getElementById("root")
+);
 
 
 // ReactDOM.render(
