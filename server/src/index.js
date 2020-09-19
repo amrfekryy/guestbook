@@ -1,4 +1,5 @@
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
 const { ApolloServer } = require('apollo-server');
 const isEmail = require('isemail');
@@ -15,14 +16,16 @@ const store = createStore();
 const server = new ApolloServer({
 
   context: async ({ req }) => {
-    // simple auth check on every request
-    const auth = req.headers && req.headers.authorization || '';
-    const email = Buffer.from(auth, 'base64').toString('ascii');
-    if (!isEmail.validate(email)) return { user: null };
-    // find a user by their email
-    const users = await store.users.findOrCreate({ where: { email } });
-    const user = users && users[0] || null;
-    return { user: { ...user.dataValues } };
+    // simple jwt auth check on every request
+    const token = req.headers && req.headers.auth_token || '';
+    if (!token) return { user: null };
+
+    const data = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded_token) => {
+      if (err) return { user: null };
+      const user = await store.users.findOne({ where: { email: decoded_token.email } });
+      return { user: { ...user.dataValues } };
+    })
+    return data
   },
 
   typeDefs,

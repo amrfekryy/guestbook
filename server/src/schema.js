@@ -56,9 +56,9 @@ const typeDefs = gql`
 
   type Mutation {
     
-    signup(email: String, password: String): String
-    login(email: String, password: String): String # return login token
-    
+    signup(name: String, email: String, password: String): authResponse
+    login(email: String, password: String): authResponse
+
     addGuestbook(title: String): addEntityResponse!
 
     # addMessage(guestbookId: ID!): addEntityResponse!
@@ -69,6 +69,12 @@ const typeDefs = gql`
     # updateReply(replyId: ID!): mutateEntityResponse!
     # deleteReply(replyId: ID!): mutateEntityResponse!
 
+  }
+
+  type authResponse {
+    success: Boolean!
+    resMessage: String
+    token: String
   }
   
   type addEntityResponse {

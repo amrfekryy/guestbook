@@ -7,10 +7,10 @@ module.exports = {
   },
 
   Mutation: {
-    login: async (_, { email }, { dataSources }) => {
-      const user = await dataSources.userAPI.findOrCreateUser({ email });
-      if (user) return Buffer.from(email).toString('base64'); // auth token
-    },
+    signup: async (_, args, { dataSources }) =>
+      await dataSources.userAPI.signup(args),
+    login: async (_, args, { dataSources }) =>
+      await dataSources.userAPI.login(args),
     addGuestbook: async (_, args, { dataSources }) =>
       await dataSources.userAPI.addGuestbook(args),
     
