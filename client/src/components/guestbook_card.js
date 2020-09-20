@@ -40,7 +40,7 @@ export default function SimpleCard(props) {
         <CardMedia
           className={classes.media}
           image={Image}
-          title="Contemplative Reptile"
+          title="Guest Book Picture"
         />
         <Typography variant="h5" component="h2">
           GuestBook Title
@@ -49,23 +49,24 @@ export default function SimpleCard(props) {
           Date
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          By: Author
+          By Author
         </Typography>
         <Typography variant="body2" component="p">
           Description
         </Typography>
       </CardContent>
-      <CardActions>
-        <Grid   
-          container
-          direction="row"
-          justify="center"
-          // alignItems="center"
-        >
-          <Button size="small" color="primary" 
-            component={Link} to={`/guestbook/${props.guestbookId}`}>Visit</Button>
-        </Grid>
-      </CardActions>
+      {props.display !== 'main' && 
+        <CardActions>
+          <Grid   
+            container
+            direction="row"
+            justify="center"
+            // alignItems="center"
+          >
+            <Button size="large" color="primary" 
+              component={Link} to={`/guestbook/${props.guestbookId}`}>Open</Button>
+          </Grid>
+        </CardActions>}
     </Card>
   );
 }

@@ -6,7 +6,7 @@ export default function SimpleContainer(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" >
         {props.children}
       </Container>
     </React.Fragment>
