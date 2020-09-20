@@ -1,3 +1,3 @@
 import React from 'react';
-
-export default (props) => <div>Profile {props.userId}</div>
+import Guestbooks from 'components/guestbooks'
+export default (props) => <Guestbooks userId={props.userId} />

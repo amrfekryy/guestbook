@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FormPropsTextFields() {
+export default function FormPropsTextFields(props) {
   const classes = useStyles();
 
   return (
@@ -21,10 +21,14 @@ export default function FormPropsTextFields() {
       justifyContent: 'center',
     }}>
       <div>
-        <TextField id="name" label="Name" variant="outlined"/> <br/>
+        {props.type === 'signup' && 
+          <><TextField id="name" label="Name" variant="outlined"/> <br/></>}
+        
         <TextField id="email" label="Email" variant="outlined"/> <br/>
         <TextField id="password" label="Password" type="password" variant="outlined"/> <br/>
-        <TextField id="password2" label="Retype Password" type="password" variant="outlined"/>
+        
+        {props.type === 'signup' && 
+          <><TextField id="password2" label="Retype Password" type="password" variant="outlined"/></>}
       </div>
     </form>
   );

@@ -1,4 +1,4 @@
 import React from 'react'
-import Login from 'components/form';
+import Form from 'components/form';
 
-export default () => <div>Login</div>
+export default () => <Form type='login'/>

@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Image from 'assets/guestbook.jpg'
+import { Link } from '@reach/router';
 
 const useStyles = makeStyles({
   root: {
@@ -30,9 +31,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SimpleCard() {
+export default function SimpleCard(props) {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
 
   return (
     <Card className={classes.root}>
@@ -62,38 +62,10 @@ export default function SimpleCard() {
           justify="center"
           // alignItems="center"
         >
-          <Button size="small" color="primary">Visit</Button>
+          <Button size="small" color="primary" 
+            component={Link} to={`/guestbook/${props.guestbookId}`}>Visit</Button>
         </Grid>
       </CardActions>
-    </Card>
-  );
-}
-
-
-
-
-
-function MediaCard() {
-  const classes = useStyles();
-
-  return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
-          </Typography>
-        </CardContent>
-      </CardActionArea>
     </Card>
   );
 }

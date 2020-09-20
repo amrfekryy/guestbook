@@ -9,6 +9,10 @@ import Login from './login'
 import Profile from './profile'
 import Guestbook from './guestbook'
 
+const NotFound = () => (
+  <div>Sorry, nothing here.</div>
+)
+
 export default function Pages() {
   return (
     <Container>
@@ -18,7 +22,8 @@ export default function Pages() {
         <Signup    path="signup" />                 
         <Login     path="login" />                  
         <Profile   path="profile/:userId" />        
-        <Guestbook path="guestbook/:guestbookId" /> 
+        <Guestbook path="guestbook/:guestbookId" />
+        <NotFound default />
       </Router>
     </Container>
   );

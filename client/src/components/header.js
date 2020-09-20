@@ -4,9 +4,12 @@ import { Link } from '@reach/router';
 import { emphasize, withStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';
+
 import HomeIcon from '@material-ui/icons/Home';
 import VpnKey from '@material-ui/icons/VpnKey';
 import LockOpen from '@material-ui/icons/LockOpen';
+import ExitToApp from '@material-ui/icons/ExitToApp';
+import Person from '@material-ui/icons/Person';
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -46,6 +49,13 @@ export default function CustomizedBreadcrumbs() {
         <StyledBreadcrumb component={Link} to='signup' label="Sign Up"
           icon={<VpnKey fontSize="small" />}
         />
+        <StyledBreadcrumb component={Link} to={`profile/${1}`} label="Me"
+          icon={<Person fontSize="small" />}
+        />
+        <StyledBreadcrumb component={Link} to='login' label="Logout"
+          icon={<ExitToApp fontSize="small" />}
+        />
+
     </Breadcrumbs>
   );
 }
