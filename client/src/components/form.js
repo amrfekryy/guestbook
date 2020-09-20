@@ -22,7 +22,7 @@ export default function FormPropsTextFields() {
     }}>
       <div>
         <TextField id="name" label="Name" variant="outlined"/> <br/>
-        <TextField id="name" label="Email" variant="outlined"/> <br/>
+        <TextField id="email" label="Email" variant="outlined"/> <br/>
         <TextField id="password" label="Password" type="password" variant="outlined"/> <br/>
         <TextField id="password2" label="Retype Password" type="password" variant="outlined"/>
       </div>

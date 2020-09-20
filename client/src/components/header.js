@@ -32,7 +32,7 @@ function handleClick(event) {
 export default function CustomizedBreadcrumbs() {
   return (
     <Breadcrumbs aria-label="breadcrumb" style={{
-      marginBottom: '5ch',
+      margin: '5ch',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

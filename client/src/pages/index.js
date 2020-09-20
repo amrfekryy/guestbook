@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Router, Link } from '@reach/router';
 
+import Container from 'containers/main_container'
 import Header from 'components/header'
 import Home from './home'
 import Signup from './signup'
@@ -10,7 +11,7 @@ import Guestbook from './guestbook'
 
 export default function Pages() {
   return (
-    <Fragment>
+    <Container>
       <Header />
       <Router>
         <Home path="/" />
@@ -19,6 +20,6 @@ export default function Pages() {
         <Profile   path="profile/:userId" />        
         <Guestbook path="guestbook/:guestbookId" /> 
       </Router>
-    </Fragment>
+    </Container>
   );
 }
