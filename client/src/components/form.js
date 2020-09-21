@@ -1,35 +1,98 @@
-import React from 'react';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '40ch',
-    },
-  },
-}));
+import React from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
-export default function FormPropsTextFields(props) {
-  const classes = useStyles();
+// const MyInput = ({ field, form, ...props }) => {
+//   return <TextField {...field} {...props} label="Name" variant="outlined" />;
+// };
 
+const SignupForm = () => {
   return (
-    <form className={classes.root} noValidate autoComplete="off" style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      <div>
-        {props.type === 'signup' && 
-          <><TextField id="name" label="Name" variant="outlined"/> <br/></>}
-        
-        <TextField id="email" label="Email" variant="outlined"/> <br/>
-        <TextField id="password" label="Password" type="password" variant="outlined"/> <br/>
-        
-        {props.type === 'signup' && 
-          <><TextField id="password2" label="Retype Password" type="password" variant="outlined"/></>}
-      </div>
-    </form>
+    <Grid   
+      container
+      direction="row"
+      justify="center"
+      // alignItems="center"
+    >
+    <Grid item xs={12} sm={6} lg={4}>
+
+    <Paper elevation={3} >
+      <Formik
+        initialValues={{ name: '', email: '', password: '', password2: '' }}
+        validationSchema={Yup.object({
+          name: Yup.string().required('Required'),
+          email: Yup.string().email('Invalid email address').required('Required'),
+          password: Yup.string().required('Required'),
+          password2: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
+        })}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        <Form>
+          <Grid           
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            spacing={3}
+          >
+            <Grid item xs={12}>
+              <Field name="name">
+                  {({ field, meta }) => {
+                    const error = meta.touched && meta.error ? {error: true, helperText: meta.error} : null
+                    return <TextField type="text" label="Name" variant="outlined" required {...field} {...error}/>;
+                }}
+              </Field>
+            
+            </Grid>
+
+            <Grid item xs={12}>
+              <Field name="email">
+                {({ field, meta }) => {
+                    const error = meta.touched && meta.error ? {error: true, helperText: meta.error} : null
+                    return <TextField type="email" label="Email" variant="outlined" required {...field} {...error}/>;
+                }}
+              </Field>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Field name="password">              
+                {({ field, meta }) => {
+                    const error = meta.touched && meta.error ? {error: true, helperText: meta.error} : null
+                    return <TextField type="password" label="Password" variant="outlined" required {...field} {...error}/>;
+                }}
+              </Field>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Field name="password2">
+              {({ field, meta }) => {
+                    const error = meta.touched && meta.error ? {error: true, helperText: meta.error} : null
+                    return <TextField type="password" label="Confirm Password" variant="outlined" required {...field} {...error}/>;
+                }}
+              </Field>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button type='submit' variant="contained">Submit</Button>
+            </Grid>
+          
+          </Grid>
+        </Form>
+      </Formik>
+    </Paper>
+    </Grid>
+    </Grid>
   );
-}
+};
+
+export default SignupForm
