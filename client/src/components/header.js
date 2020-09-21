@@ -11,7 +11,10 @@ import LockOpen from '@material-ui/icons/LockOpen';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import Person from '@material-ui/icons/Person';
 
-const StyledBreadcrumb = withStyles((theme) => ({
+import Drawer from 'components/input_drawer'
+
+
+export const StyledBreadcrumb = withStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.grey[100],
     height: theme.spacing(4),
@@ -55,7 +58,7 @@ export default function CustomizedBreadcrumbs() {
         <StyledBreadcrumb component={Link} to='login' label="Logout"
           icon={<ExitToApp fontSize="small" />}
         />
-
+        <Drawer />
     </Breadcrumbs>
   );
 }
