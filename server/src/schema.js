@@ -90,6 +90,7 @@ const typeDefs = gql`
     reply: Reply
     replies: [Reply]
     token: String
+    userId: ID
   }  
 
 `;
