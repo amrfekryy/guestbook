@@ -1,24 +1,8 @@
 import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import {StyledBreadcrumb} from 'components/header'
-import AddCircle from '@material-ui/icons/AddCircle';
-import { Link } from '@reach/router';
+import EntryForm from 'components/forms/entry'
 
-
-const useStyles = makeStyles({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
-  },
-});
-
-export default function TemporaryDrawer() {
-  const classes = useStyles();
+export default function TemporaryDrawer(props) {
   const [state, setState] = React.useState({
     show: false,
   });
@@ -26,15 +10,11 @@ export default function TemporaryDrawer() {
   return (
     <div>
       <React.Fragment>
-        <StyledBreadcrumb label="Add Guestbook"
-            component={Link} to={`/profile/${1}`}
-            icon={<AddCircle fontSize="small" />}
-            onClick={()=>setState({ show: true })}
-          />
-
-        {/* <Button onClick={()=>setState({ show: true })} >fdsf</Button> */}
+        <div onClick={()=>setState({ show: true })}>
+          {props.children}
+        </div>
         <Drawer anchor={'bottom'} open={state['show']} onClose={()=>setState({ show: false })}>
-          <div>Hello</div>
+          <EntryForm formType='addGuestbook'/>
         </Drawer>
       </React.Fragment>
     </div>

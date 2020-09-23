@@ -7,33 +7,30 @@ import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import createSchema from './validationSchema'
 import { useMutation } from "@apollo/client";
-import { SIGNUP, LOGIN } from 'helpers/queries'
+import { ADDGUESTBOOK } from 'helpers/queries'
 
 import { message } from 'antd';
 import { useNavigate } from "@reach/router"
-// import { loginUser } from 'helpers/user_session'
 import { UserContext } from 'containers/user_context'
 
-// export default class SignupForm extends React.Component {
-// MyInput = ({ field, form, ...props }) => {
-//   return <TextField {...field} {...props} label="Name" variant="outlined" />;
-// };
-
-const SignupForm = (props) => {
+const FormControl =  (props) => {
 
   return (
     <Grid
       container
       direction="row"
       justify="center"
-    // alignItems="center"
+      alignItems="center"
     >
-      <Grid item xs={12} sm={6} lg={4}>
-        <Paper elevation={3} >
+      <Grid item xs={12} sm={6} style={{padding: '50px'}}>
+        <Paper elevation={3}>
           <Formik
-            initialValues={{ name: '', email: '', password: '', password2: '' }}
-            validationSchema={createSchema(props.formType)}
-            onSubmit={values => props.triggerMutation({ variables: { ...values }})}
+            initialValues={{ title: '', description: '' }}
+            // validationSchema={createSchema(props.formType)}
+            onSubmit={values => 
+              // alert(JSON.stringify(values))
+              props.triggerMutation({ variables: { ...values }})
+            }
           >
             <Form>
               <Grid
@@ -43,43 +40,26 @@ const SignupForm = (props) => {
                 alignItems="center"
                 spacing={3}
               >
-                {props.formType === 'signup' &&
-                  <Grid item xs={12}>
-                    <Field name="name">
-                      {({ field, meta }) => {
-                        const error = meta.touched && meta.error ? { error: true, helperText: meta.error } : null
-                        return <TextField type="text" label="Name" variant="outlined" required {...field} {...error} />;
-                      }}
-                    </Field>
-                  </Grid>}
 
                 <Grid item xs={12}>
-                  <Field name="email">
+                  <Field name="title">
                     {({ field, meta }) => {
                       const error = meta.touched && meta.error ? { error: true, helperText: meta.error } : null
-                      return <TextField type="email" label="Email" variant="outlined" required {...field} {...error} />;
+                      return <TextField type="text" label="Title" variant="outlined" required {...field} {...error} />;
                     }}
                   </Field>
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Field name="password">
+                  <Field name="description">
                     {({ field, meta }) => {
                       const error = meta.touched && meta.error ? { error: true, helperText: meta.error } : null
-                      return <TextField type="password" label="Password" variant="outlined" required {...field} {...error} />;
+                      return <TextField type="text" label="Description" variant="outlined" required {...field} {...error} 
+                          multiline style={{minWidth: '50ch'}}
+                        />;
                     }}
                   </Field>
                 </Grid>
-
-                {props.formType === 'signup' &&
-                  <Grid item xs={12}>
-                    <Field name="password2">
-                      {({ field, meta }) => {
-                        const error = meta.touched && meta.error ? { error: true, helperText: meta.error } : null
-                        return <TextField type="password" label="Confirm Password" variant="outlined" required {...field} {...error} />;
-                      }}
-                    </Field>
-                  </Grid>}
 
                 <Grid item xs={12}>
                     <Button type='submit' variant="contained">{props.formType === 'signup' ? 'Sign Up' : 'Login'}</Button>
@@ -104,25 +84,26 @@ export default (props) => {
   const { loginUser } = React.useContext(UserContext);
 
   const settings = {
-    login: {
-      text: 'Login',
-      mutation: LOGIN,
+    addGuestbook: {
+      text: 'Add',
+      mutation: ADDGUESTBOOK,
       onSuccess: (data) => {
-        const { token, userId, userName } = data[formType]
-        loginUser({ token, userId, userName })
-        navigate(`/profile/${userId}`)
+        // const { token, userId, userName } = data[formType]
+        // loginUser({ token, userId, userName })
+        navigate(`/login`)
       }
     },
-    signup: {
-      text: 'Sign Up',
-      mutation: SIGNUP,
-      onSuccess: () => navigate('/login')
-    }
+    // signup: {
+    //   text: 'Sign Up',
+    //   mutation: SIGNUP,
+    //   onSuccess: () => navigate('/login')
+    // }
   }
 
   const [triggerMutation, { data, loading, error }] = useMutation(settings[formType].mutation, {
     // variables: { name, email, password },
     onCompleted(data) {
+      alert(JSON.stringify(data))
       // redirect to login if signup was successful
       if (data[formType] && data[formType].success) {
         message.success(`Successful ${settings[formType].text}, Please wait...`, 3, 
@@ -134,5 +115,5 @@ export default (props) => {
   });
   // if (loading) hide = message.loading('Action in progress..', 0);
   if (error) return message.error(error.message, 3);
-  return <SignupForm {...{...props, ...{ triggerMutation, data }}} />
+  return <FormControl {...{...props, ...{ triggerMutation, data }}} />
 }

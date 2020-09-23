@@ -79,7 +79,7 @@ class UserAPI extends DataSource {
 
     const guestbook = await this.store.guestbooks.create({...args, userId: this.context.user.id})
     const guestbooks = await this.store.guestbooks.findAll()
-    return { success: true, guestbook, guestbooks }
+    return { success: true, guestbook, guestbooks, userId: this.context.user.id}
   }
 
   async addMessage({ guestbookId, body, guestName, guestEmail }) {

@@ -23,6 +23,19 @@ mutation login($email: String!, $password: String!) {
 }
 `;
 
+export const ADDGUESTBOOK = gql`
+mutation addGuestbook($title: String!, $description: String!){
+  addGuestbook(title: $title, description: $description) {
+    success,
+    resMessage,
+    guestbooks {
+      title
+      description
+    }
+  }
+}
+`;
+
 
 // mutation SS{
 //   deleteMessage(messageId:1) {
@@ -54,22 +67,6 @@ mutation login($email: String!, $password: String!) {
 //       title
 //       id
 //     }
-//   }
-// }
-// mutation SS{
-//   addGuestbook(title:"eshtaaaaaaat") {
-//     success,
-//     resMessage,
-//     guestbooks {
-//       title
-//     }
-//   }
-// }
-// mutation SS{
-//   signup(name:"aa", email:"aa@aa", password:"123") {
-//     success,
-//     resMessage
-//     token
 //   }
 // }
 

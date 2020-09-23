@@ -25,6 +25,7 @@ const server = new ApolloServer({
       const user = await store.users.findOne({ where: { email: decoded_token.email } });
       return { user: { ...user.dataValues } };
     })
+    console.log(data)
     return data
   },
 

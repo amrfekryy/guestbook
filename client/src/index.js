@@ -6,9 +6,9 @@ import './index.css';
 
 
 export const cache = new InMemoryCache()
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: "http://localhost:4000/",
-  // headers: { authorization: localStorage.getItem('token') || ''},
+  headers: { auth_token: localStorage.getItem('token') || ''},
   cache,
 });
 

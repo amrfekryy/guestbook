@@ -55,7 +55,8 @@ module.exports.createStore = () => {
     },
     createdAt: SQL.DATE,
     updatedAt: SQL.DATE,
-    title: SQL.INTEGER,
+    title: SQL.STRING,
+    description: SQL.STRING,
     userId: SQL.INTEGER,
   });
 
@@ -90,7 +91,7 @@ module.exports.createStore = () => {
   // guestbooks.sync({force: true}) // drops table
   users.sync()
   guests.sync()
-  guestbooks.sync()
+  guestbooks.sync({force: true})
   messages.sync()
   replies.sync()
 

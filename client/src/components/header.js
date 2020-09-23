@@ -11,9 +11,11 @@ import VpnKey from '@material-ui/icons/VpnKey';
 import LockOpen from '@material-ui/icons/LockOpen';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import Person from '@material-ui/icons/Person';
+import AddCircle from '@material-ui/icons/AddCircle';
 
-import AddGuestbookDrawer from 'components/input_drawer'
+import ConnectDrawer from 'components/input_drawer'
 import { UserContext } from 'containers/user_context'
+import { client } from 'index'
 
 export const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -34,9 +36,12 @@ export const StyledBreadcrumb = withStyles((theme) => ({
 
 export default function CustomizedBreadcrumbs() {
   const { isLoggedIn, logoutUser } = React.useContext(UserContext);
-
-  // const { data } = useQuery(IS_LOGGED_IN);
   console.log('dddddddddddd', isLoggedIn, logoutUser)
+
+  // const [state, setState] = React.useState({
+  //   show: false,
+  // });
+
 
   return (
     <Breadcrumbs aria-label="breadcrumb" style={{
@@ -60,12 +65,12 @@ export default function CustomizedBreadcrumbs() {
 
         { !isLoggedIn && <>
           <Grid item>
-            <StyledBreadcrumb component={Link} to='login' label="Login"
+            <StyledBreadcrumb component={Link} to='/login' label="Login"
               icon={<LockOpen fontSize="small" />}
             />
           </Grid>
           <Grid item>
-            <StyledBreadcrumb component={Link} to='signup' label="Sign Up"
+            <StyledBreadcrumb component={Link} to='/signup' label="Sign Up"
               icon={<VpnKey fontSize="small" />}
             />
           </Grid>
@@ -73,16 +78,21 @@ export default function CustomizedBreadcrumbs() {
 
         { isLoggedIn && <>
           <Grid item>
-            <StyledBreadcrumb component={Link} to={`profile/${1}`} label="Me"
+            <StyledBreadcrumb component={Link} to={`/profile/${1}`} label="Me"
               icon={<Person fontSize="small" />}
             />
           </Grid>
           <Grid item>
-            <AddGuestbookDrawer />
+            <ConnectDrawer>
+              <StyledBreadcrumb label="Add Guestbook" 
+                // component={Link} to={`/profile/${1}`}
+                icon={<AddCircle fontSize="small" />}
+              />
+            </ConnectDrawer>
           </Grid>
           <Grid item>
-            <StyledBreadcrumb component={Link} to='login' label="Logout"
-              icon={<ExitToApp fontSize="small"/>} onClick={logoutUser}
+            <StyledBreadcrumb component={Link} to='/login' label="Logout"
+              icon={<ExitToApp fontSize="small"/>} onClick={() => { logoutUser(); client.resetStore();}}
             />
           </Grid>
         </>}

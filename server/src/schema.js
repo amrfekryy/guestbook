@@ -23,6 +23,7 @@ const typeDefs = gql`
   type Guestbook {
     id: ID!
     title: String!
+    description: String!
     messages: [Message]
   }
   
@@ -59,7 +60,7 @@ const typeDefs = gql`
     signup(name: String, email: String, password: String): Response!
     login(email: String, password: String): Response!
 
-    addGuestbook(title: String): Response!
+    addGuestbook(title: String, description: String): Response!
 
     addMessage(
       guestbookId: ID!
