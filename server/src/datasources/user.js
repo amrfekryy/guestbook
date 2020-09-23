@@ -54,10 +54,11 @@ class UserAPI extends DataSource {
     if (user.dataValues.password !== password)
       return {...response, resMessage: "Password incorrect"};
     
-    // console.log(user.dataValues)
-    // create token
+      // create token
+      // console.log(userId, userName)
+    const { id, name } = user['dataValues']
     const token = jwt.sign({...user.dataValues}, process.env.ACCESS_TOKEN_SECRET)
-    return {...response, success: true, userId: user.dataValues.id, token}
+    return {...response, success: true, userId: id, userName: name, token}
   }
 
   notLoggedIn() {

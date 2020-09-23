@@ -4,6 +4,7 @@ import { Link } from '@reach/router';
 import { emphasize, withStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
 
 import HomeIcon from '@material-ui/icons/Home';
 import VpnKey from '@material-ui/icons/VpnKey';
@@ -11,8 +12,8 @@ import LockOpen from '@material-ui/icons/LockOpen';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import Person from '@material-ui/icons/Person';
 
-import Drawer from 'components/input_drawer'
-
+import AddGuestbookDrawer from 'components/input_drawer'
+import { UserContext } from 'containers/user_context'
 
 export const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -30,12 +31,13 @@ export const StyledBreadcrumb = withStyles((theme) => ({
   },
 }))(Chip); // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
 
-function handleClick(event) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
 
 export default function CustomizedBreadcrumbs() {
+  const { isLoggedIn, logoutUser } = React.useContext(UserContext);
+
+  // const { data } = useQuery(IS_LOGGED_IN);
+  console.log('dddddddddddd', isLoggedIn, logoutUser)
+
   return (
     <Breadcrumbs aria-label="breadcrumb" style={{
       margin: '5ch',
@@ -43,22 +45,48 @@ export default function CustomizedBreadcrumbs() {
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-        <StyledBreadcrumb component={Link} to='/' label="Home"
-          icon={<HomeIcon fontSize="small" />}
-        />
-        <StyledBreadcrumb component={Link} to='login' label="Login"
-          icon={<LockOpen fontSize="small" />}
-        />
-        <StyledBreadcrumb component={Link} to='signup' label="Sign Up"
-          icon={<VpnKey fontSize="small" />}
-        />
-        <StyledBreadcrumb component={Link} to={`profile/${1}`} label="Me"
-          icon={<Person fontSize="small" />}
-        />
-        <StyledBreadcrumb component={Link} to='login' label="Logout"
-          icon={<ExitToApp fontSize="small" />}
-        />
-        <Drawer />
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="center"
+      spacing= {3}
+    >
+        <Grid item>
+          <StyledBreadcrumb component={Link} to='/' label="Home"
+            icon={<HomeIcon fontSize="small" />}
+          />
+        </Grid>
+
+        { !isLoggedIn && <>
+          <Grid item>
+            <StyledBreadcrumb component={Link} to='login' label="Login"
+              icon={<LockOpen fontSize="small" />}
+            />
+          </Grid>
+          <Grid item>
+            <StyledBreadcrumb component={Link} to='signup' label="Sign Up"
+              icon={<VpnKey fontSize="small" />}
+            />
+          </Grid>
+        </>}
+
+        { isLoggedIn && <>
+          <Grid item>
+            <StyledBreadcrumb component={Link} to={`profile/${1}`} label="Me"
+              icon={<Person fontSize="small" />}
+            />
+          </Grid>
+          <Grid item>
+            <AddGuestbookDrawer />
+          </Grid>
+          <Grid item>
+            <StyledBreadcrumb component={Link} to='login' label="Logout"
+              icon={<ExitToApp fontSize="small"/>} onClick={logoutUser}
+            />
+          </Grid>
+        </>}
+    </Grid>
     </Breadcrumbs>
   );
 }

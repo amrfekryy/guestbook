@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 
 export const SIGNUP = gql`
@@ -17,6 +17,7 @@ mutation login($email: String!, $password: String!) {
     success
     resMessage
     userId
+    userName
     token
   }
 }

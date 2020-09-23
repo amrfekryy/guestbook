@@ -4,10 +4,12 @@ import ReactDOM from 'react-dom';
 import Pages from "./pages";
 import './index.css';
 
+
+export const cache = new InMemoryCache()
 const client = new ApolloClient({
   uri: "http://localhost:4000/",
   // headers: { authorization: localStorage.getItem('token') || ''},
-  cache: new InMemoryCache()
+  cache,
 });
 
 ReactDOM.render(

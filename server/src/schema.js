@@ -91,6 +91,7 @@ const typeDefs = gql`
     replies: [Reply]
     token: String
     userId: ID
+    userName: ID
   }  
 
 `;

@@ -11,7 +11,8 @@ import { SIGNUP, LOGIN } from 'helpers/queries'
 
 import { message } from 'antd';
 import { useNavigate } from "@reach/router"
-
+// import { loginUser } from 'helpers/user_session'
+import { UserContext } from 'containers/user_context'
 
 // export default class SignupForm extends React.Component {
 // MyInput = ({ field, form, ...props }) => {
@@ -100,14 +101,16 @@ const SignupForm = (props) => {
 export default (props) => {
   const { formType } = props
   const navigate = useNavigate()
+  const { loginUser } = React.useContext(UserContext);
 
   const settings = {
     login: {
       text: 'Login',
       mutation: LOGIN,
       onSuccess: (data) => {
-        localStorage.setItem("token", data[formType].token);
-        navigate(`/profile/${data[formType].userId}`)
+        const { token, userId, userName } = data[formType]
+        loginUser({ token, userId, userName })
+        navigate(`/profile/${userId}`)
       }
     },
     signup: {
@@ -118,7 +121,6 @@ export default (props) => {
   }
 
   const [triggerMutation, { data, loading, error }] = useMutation(settings[formType].mutation, {
-    // fetchPolicy: "network-only",
     // variables: { name, email, password },
     onCompleted(data) {
       // redirect to login if signup was successful
@@ -127,9 +129,7 @@ export default (props) => {
           () => settings[formType].onSuccess(data))
       }
       else message.error(data[props.formType].resMessage, 3);
-
-      // return;
-      alert(JSON.stringify(data, null, 2));
+      // alert(JSON.stringify(data, null, 2));
     }
   });
   // if (loading) hide = message.loading('Action in progress..', 0);
