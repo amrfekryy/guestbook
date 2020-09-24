@@ -11,6 +11,8 @@ import { message } from 'antd';
 import { useNavigate } from "@reach/router"
 import { UserContext } from 'containers/user_context'
 import * as controls from 'components/forms/settings'
+import { DrawerContext } from 'components/input_drawer'
+
 
 // export default class SignupForm extends React.Component {
 // MyInput = ({ field, form, ...props }) => {
@@ -32,7 +34,7 @@ const FormControl = (props) => {
           <Formik
             // set field names to empty strings
             initialValues={Object.keys(settings.fields).reduce((obj, key) => ({...obj, [key]: ''}) , {})}
-            // validationSchema={settings.validationSchema || ''}
+            validationSchema={settings.validationSchema || ''}
             onSubmit={values => triggerMutation({ variables: { ...values }})}
           >
             <Form>
@@ -72,26 +74,32 @@ const FormControl = (props) => {
 export default (props) => {
   const settings = controls[props.settings]
 
-  const { loginUser } = React.useContext(UserContext);
+  const { loginUser, userId } = React.useContext(UserContext);
+  const { hideDrawer } = React.useContext(DrawerContext);
   const navigate = useNavigate()
 
   const complete = {
     login: (data) => {
       const { token, userId, userName } = data[settings.name]
       loginUser({ token, userId, userName })
-      navigate(`/profile/${userId}`)
+      message.success(settings.success_message, 2, navigate(`/profile/${userId}`))
     },
-    signup: () => navigate('/login'),
-    addGuestbook: () => navigate('/login'),
+    signup: () => {
+      message.success(settings.success_message, 2, navigate('/login'))
+    },
+    addGuestbook: () => {
+      hideDrawer()
+      navigate(`/profile/${userId}`)
+      message.success(settings.success_message, 2)
+    }
   }
 
   const [triggerMutation, { data, loading, error }] = useMutation(settings.mutation, {
     onCompleted(data) {
-      // success
+
       if (data[settings.name] && data[settings.name].success)
-        message.success(settings.success_message, 3, () => complete[settings.name](data))
-      // error
-      else message.error(data[settings.name].resMessage, 3);
+        complete[settings.name](data)
+      else message.error(data[settings.name].resMessage, 2);
       // alert(JSON.stringify(data, null, 2));
     }
   });

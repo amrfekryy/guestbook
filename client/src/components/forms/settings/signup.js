@@ -6,7 +6,7 @@ export const signup = {
   text: 'Sign Up',
   mutation: SIGNUP,
   success_message: 'Successful Sign Up, Please wait...',
-  validationSchema: createSchema('signup'),
+  validationSchema: createSchema(['name', 'email', 'password', 'password2']),
   fields: {
     name: {
       type: "text", 

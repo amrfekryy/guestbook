@@ -7,7 +7,7 @@ export const addGuestbook = {
   text: 'Add Guest Book',
   mutation: ADDGUESTBOOK,
   success_message: 'Guest Book was added',
-  validationSchema: createSchema('addGuestbook'),
+  validationSchema: createSchema(['title', 'description']),
   fields: {
     title: {
       type: "text", 
