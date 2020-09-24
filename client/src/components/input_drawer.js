@@ -1,6 +1,6 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
-import EntryForm from 'components/forms/entry'
+import FormControl from 'components/forms/form_control'
 
 export default function TemporaryDrawer(props) {
   const [state, setState] = React.useState({
@@ -14,7 +14,7 @@ export default function TemporaryDrawer(props) {
           {props.children}
         </div>
         <Drawer anchor={'bottom'} open={state['show']} onClose={()=>setState({ show: false })}>
-          <EntryForm formType='addGuestbook'/>
+          <FormControl settings='addGuestbook'/>
         </Drawer>
       </React.Fragment>
     </div>

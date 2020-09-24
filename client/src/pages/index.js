@@ -10,7 +10,6 @@ export default function Pages() {
   return (
     <UserContextProvider>
       <Container maxWidth="lg" >
-        {/* <Header /> */}
         <Router>
           <Home      path="/" />
           <SignUp    path="/signup" />                 
