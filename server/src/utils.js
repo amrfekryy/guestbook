@@ -91,7 +91,7 @@ module.exports.createStore = () => {
   // guestbooks.sync({force: true}) // drops table
   users.sync()
   guests.sync()
-  guestbooks.sync({force: true})
+  guestbooks.sync()
   messages.sync()
   replies.sync()
 

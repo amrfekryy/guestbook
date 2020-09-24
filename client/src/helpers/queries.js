@@ -1,5 +1,28 @@
 import { gql } from "@apollo/client";
 
+export const GUESTBOOKDATA = gql`
+fragment GUESTBOOKDATA on Guestbook {
+  id
+  title
+  description
+}
+`;
+export const MESSAGEDATA = gql`
+fragment MESSAGEDATA on Message {
+  id
+  body
+  userId
+  guestId
+}
+`;
+export const REPLYDATA = gql`
+fragment REPLYDATA on Reply {
+  id
+  body
+  userId
+}
+`;
+
 
 export const SIGNUP = gql`
 mutation signup($name: String!, $email: String!, $password: String!) {
@@ -12,12 +35,22 @@ mutation signup($name: String!, $email: String!, $password: String!) {
 `;
 
 export const LOGIN = gql`
+${GUESTBOOKDATA}
+${MESSAGEDATA}
+${REPLYDATA}
+
 mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     success
     resMessage
-    userId
-    userName
+    me {
+      id
+      name
+      email
+      guestbooks {...GUESTBOOKDATA}
+      messages {...MESSAGEDATA}
+      replies {...REPLYDATA}
+    }
     token
   }
 }

@@ -8,9 +8,9 @@ const typeDefs = gql`
     id: ID!
     name: String!
     email: String!
-    guestbooks: [Guestbook]!
-    # messages: [Message]!
-    # replies: [Reply]!
+    guestbooks: [Guestbook]
+    messages: [Message]
+    replies: [Reply]
   }
 
   type Guest {
@@ -24,22 +24,21 @@ const typeDefs = gql`
     id: ID!
     title: String!
     description: String!
-    messages: [Message]
+    # messages: [Message]
   }
   
   type Message {
     id: ID!
     body: String!
-    replies: [Reply]!
-    user: User
-    guest: Guest
-    # time: String!
+    userId: ID
+    guestId: ID
+    # replies: [Reply]
   }
   
   type Reply {
     id: ID!
     body: String!
-    user: User!
+    userId: ID
     # guest: Guest
     # time: String!
   }
@@ -47,10 +46,9 @@ const typeDefs = gql`
   ## queries ##
 
   type Query {
-    test: String
     me: User
-    guestbooks: [Guestbook]! # for all users
-    guestbook(id: ID!): Guestbook # one guestbook
+    guestbooks: [Guestbook]!
+    guestbook(id: ID!): Guestbook 
   }
   
   ## mutations ##
@@ -90,11 +88,9 @@ const typeDefs = gql`
     messages: [Message]
     reply: Reply
     replies: [Reply]
+    me: User
     token: String
-    userId: ID
-    userName: ID
-  }  
-
+  }
 `;
 
 module.exports = typeDefs;

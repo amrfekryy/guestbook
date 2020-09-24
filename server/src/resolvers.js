@@ -1,7 +1,7 @@
 module.exports = {
 
   Query: {
-    test: () => 'hello',
+    // test: () => 'hello',
     me: (_, __, { dataSources }) => 
       dataSources.userAPI.findOrCreateUser()
   },

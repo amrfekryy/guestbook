@@ -1,8 +1,9 @@
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
 const { DataSource } = require('apollo-datasource');
 const isEmail = require('isemail');
-const jwt = require('jsonwebtoken');
+const GeneralAPI = require('./general')
 
 class UserAPI extends DataSource {
   constructor({ store }) {
@@ -21,10 +22,6 @@ class UserAPI extends DataSource {
       token: null,
     }
     
-    if (!email || !password || !name) 
-      return {...response, resMessage: 'username, email or password is missing'};
-    if (!isEmail.validate(email))
-      return {...response, resMessage: 'Email is invalid'};
     let user = await this.store.users.findOne({ where: { email } });
     if (user && user.dataValues && user.dataValues.password)
       return {...response, resMessage: 'Email already exists'};
@@ -44,21 +41,20 @@ class UserAPI extends DataSource {
     const email =
       this.context && this.context.user ? this.context.user.email : emailArg;
 
-    if (!email || !password ) 
-      return {...response, resMessage: 'Email or password is missing'};
-    if (!isEmail.validate(email))
-      return {...response, resMessage: 'Email is invalid'};
     const user = await this.store.users.findOne({ where: { email } });
     if (!user)
       return {...response, resMessage: "Email doesn't exists"};
     if (user.dataValues.password !== password)
       return {...response, resMessage: "Password incorrect"};
     
-      // create token
-      // console.log(userId, userName)
-    const { id, name } = user['dataValues']
+    // create token
     const token = jwt.sign({...user.dataValues}, process.env.ACCESS_TOKEN_SECRET)
-    return {...response, success: true, userId: id, userName: name, token}
+    const { id, name } = user['dataValues']
+
+    const generalAPI = new GeneralAPI({ store: this.store })
+    const { guestbooks, messages, replies } = await generalAPI.getUserData({ userId: id })
+    // console.log({ guestbooks, messages, replies })
+    return {success: true, me: { id, name, email, guestbooks, messages, replies}, token}
   }
 
   notLoggedIn() {

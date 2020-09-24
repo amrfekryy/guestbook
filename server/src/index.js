@@ -8,7 +8,7 @@ const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const { createStore } = require('./utils');
 
-// const LaunchAPI = require('./datasources/launch');
+const GeneralAPI = require('./datasources/general');
 const UserAPI = require('./datasources/user');
 
 const store = createStore();
@@ -25,14 +25,14 @@ const server = new ApolloServer({
       const user = await store.users.findOne({ where: { email: decoded_token.email } });
       return { user: { ...user.dataValues } };
     })
-    console.log(data)
+    console.log('CONTEXT', data)
     return data
   },
 
   typeDefs,
   resolvers,
   dataSources: () => ({
-    // launchAPI: new LaunchAPI(),
+    generalAPI: new GeneralAPI({ store }),
     userAPI: new UserAPI({ store }), 
   }),
   engine: {    

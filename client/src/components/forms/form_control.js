@@ -80,9 +80,11 @@ export default (props) => {
 
   const complete = {
     login: (data) => {
-      const { token, userId, userName } = data[settings.name]
-      loginUser({ token, userId, userName })
-      message.success(settings.success_message, 2, navigate(`/profile/${userId}`))
+      alert(JSON.stringify(data, null, 2));
+
+      const { token, me: { id, name, guestbooks, messages, replies } } = data[settings.name]
+      loginUser({ token, userId: id, userName: name, guestbooks, messages, replies })
+      message.success(settings.success_message, 2, navigate(`/profile/${id}`))
     },
     signup: () => {
       message.success(settings.success_message, 2, navigate('/login'))
@@ -96,7 +98,6 @@ export default (props) => {
 
   const [triggerMutation, { data, loading, error }] = useMutation(settings.mutation, {
     onCompleted(data) {
-
       if (data[settings.name] && data[settings.name].success)
         complete[settings.name](data)
       else message.error(data[settings.name].resMessage, 2);
