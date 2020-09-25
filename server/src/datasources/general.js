@@ -10,76 +10,118 @@ class GeneralAPI extends DataSource {
     this.context = config.context;
   }
 
+  async getUser({ userId }) {
+    const user = await this.store.users.findByPk(userId)
+    return user ? this.extractValues(user) : user
+  }
+
+  async getGuest({ guestId }) {
+    const guest = await this.store.guests.findByPk(guestId)
+    return guest ? this.extractValues(guest) : guest
+  }
+
+  async addUserOrGuest(data) {
+
+    if (Array.isArray(data) && data.length > 0) {
+      return await data.reduce( async (list, obj) => {        
+        // get user or guest
+        const user = await this.getUser({ userId: obj.userId })
+        const guest = await this.getGuest({ guestId: obj.guestId })
+        // console.log(obj.userId, obj.guestId, user, guest)
+  
+        list = await list
+        return [...list, {...obj, user, guest}]
+      }, [])  
+    } else {
+      const user = await this.getUser({ userId: data.userId })
+      const guest = await this.getGuest({ guestId: data.guestId })
+      if (user || guest) return {...data, user, guest}
+      else return data
+    }
+  }
+
+
   extractValues(sequelizeResult) {
-    const values = Array.isArray(sequelizeResult)
+    let values = Array.isArray(sequelizeResult)
       ? sequelizeResult.length > 0
         ? sequelizeResult.map(obj => obj.dataValues)
         : []
       : sequelizeResult.dataValues
         ? sequelizeResult.dataValues
         : sequelizeResult
-    console.log('extractValues', values)
+
     return values
   }
 
   async getAllGuestbooks() {
-    const guestbooks = await this.store.guestbooks.findAll()
-    return this.extractValues(guestbooks)
+    let guestbooks = await this.store.guestbooks.findAll()
+    guestbooks = this.extractValues(guestbooks)
+    return await this.addUserOrGuest(guestbooks)
   }
 
   async getAllMessages() {
-    const messages = await this.store.messages.findAll()
-    return this.extractValues(messages)
+    let messages = await this.store.messages.findAll()
+    messages = this.extractValues(messages)
+    return await this.addUserOrGuest(messages)
   }
 
   async getAllReplies() {
-    const replies = await this.store.replies.findAll()
-    return this.extractValues(replies)
+    let replies = await this.store.replies.findAll()
+    replies = this.extractValues(replies)
+    return await this.addUserOrGuest(replies)
   }
 
   async getGuestbooksOf({ userId }) {
-    const guestbooks = await this.store.guestbooks.findAll({ where: { userId } })
-    return this.extractValues(guestbooks)
+    let guestbooks = await this.store.guestbooks.findAll({ where: { userId } })
+    guestbooks = this.extractValues(guestbooks)
+    return await this.addUserOrGuest(guestbooks)
   }
 
   async getMessagesOf({ guestbookId }) {
-    const messages = await this.store.messages.findAll({ where: { guestbookId } })
-    return this.extractValues(messages)
+    let messages = await this.store.messages.findAll({ where: { guestbookId } })
+    messages = this.extractValues(messages)
+    return await this.addUserOrGuest(messages)
   }
 
   async getRepliesOf({ messageId }) {
-    const replies = await this.store.replies.findAll({ where: { messageId } })
-    return this.extractValues(replies)
+    let replies = await this.store.replies.findAll({ where: { messageId } })
+    replies = this.extractValues(replies)
+    return await this.addUserOrGuest(replies)
   }
 
   async getGuestbook({ guestbookId }) {
-    const guestbook = await this.store.guestbooks.findByPk(guestbookId)
-    return this.extractValues(guestbook)
+    let guestbook = await this.store.guestbooks.findByPk(guestbookId)
+    guestbook = this.extractValues(guestbook)
+    return await this.addUserOrGuest(guestbook)
   }
 
   async getMessage({ messageId }) {
-    const message = await this.store.messages.findByPk(messageId)
-    return this.extractValues(message)
+    let message = await this.store.messages.findByPk(messageId)
+    message = this.extractValues(message)
+    return await this.addUserOrGuest(message)
   }
 
   async getReply({ replyId }) {
-    const reply = await this.store.replies.findByPk(replyId)
-    return this.extractValues(reply)
+    let reply = await this.store.replies.findByPk(replyId)
+    reply = this.extractValues(reply)
+    return await this.addUserOrGuest(reply)
   }
 
   async getGuestbookPage({ guestbookId }) {
     // console.log(userId)
-    const guestbook = await this.getGuestbook({ guestbookId })
+    let guestbook = await this.getGuestbook({ guestbookId })
+    
     let messages = await this.getMessagesOf({ guestbookId })
-
     messages = await messages.reduce( async (list, message) => {
-      const replies = await this.getRepliesOf({ messageId: message.id })
+      
+      let replies = await this.getRepliesOf({ messageId: message.id })
+            
       list = await list
       return [...list, {...message, replies}]
     }, [])
 
-    console.log({ ...guestbook, messages })
-    return { guestbook, messages }
+    // console.log({ ...guestbook, messages })
+    return { guestbook , messages }
   }
 
   async getUserData({ userId }) {

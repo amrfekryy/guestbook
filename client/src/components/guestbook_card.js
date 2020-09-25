@@ -46,11 +46,11 @@ export default function SimpleCard(props) {
           {props.guestbook.title}
         </Typography>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Date
+          Created by {props.guestbook.user.name} at {props.guestbook.createdAt}
         </Typography>
-        <Typography className={classes.pos} color="textSecondary">
+        {/* <Typography className={classes.pos} color="textSecondary">
           By Author
-        </Typography>
+        </Typography> */}
         <Typography variant="body2" component="p">
           {props.guestbook.description}
         </Typography>

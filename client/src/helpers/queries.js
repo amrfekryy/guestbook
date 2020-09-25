@@ -3,8 +3,11 @@ import { gql } from "@apollo/client";
 export const GUESTBOOKDATA = gql`
 fragment GUESTBOOKDATA on Guestbook {
   id
+  createdAt
   title
   description
+  userId
+  user { name }
 }
 `;
 export const MESSAGEDATA = gql`
@@ -13,6 +16,8 @@ fragment MESSAGEDATA on Message {
   body
   userId
   guestId
+  user { name }
+  guest { name }
 }
 `;
 export const REPLYDATA = gql`
@@ -20,6 +25,7 @@ fragment REPLYDATA on Reply {
   id
   body
   userId
+  user { name }
 }
 `;
 
@@ -70,21 +76,21 @@ mutation addGuestbook($title: String!, $description: String!){
 `;
 
 export const GETALLGUESTBOOKS = gql`
+${GUESTBOOKDATA}
+
 query getAllGuestbooks {
   allGuestbooks {
-    title
-    description
-    id
+    ...GUESTBOOKDATA
   }
 }
 `;
 
 export const GETGUESTBOOKSOF = gql`
+${GUESTBOOKDATA}
+
 query getGuestbooksOf($userId: ID!){
   guestbooksOf(userId: $userId) {
-    title
-    description
-    id
+    ...GUESTBOOKDATA
   }
 }
 `;

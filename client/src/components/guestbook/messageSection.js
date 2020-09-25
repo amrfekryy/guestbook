@@ -16,13 +16,16 @@ const useStyles = makeStyles({
 export default function SimpleCard(props) {
   const classes = useStyles();
 
+  const comments = props.messages
+
   return (
     <Card className={classes.root}>
       <CardContent>
         <Typography variant="h5" component="h2">
           Messages
         </Typography>
-        <CommentList commentType='message'/>
+        <CommentList commentsType='messages' {...{ comments }}/>
+        {!comments.length && <div>No messages yet for this guestbook</div>}
       </CardContent>
     </Card>
   );

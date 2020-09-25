@@ -22,25 +22,29 @@ const typeDefs = gql`
 
   type Guestbook {
     id: ID!
+    createdAt: String
     title: String!
     description: String!
     messages: [Message]
+    userId: String
+    user: User
   }
   
   type Message {
     id: ID!
     body: String!
+    replies: [Reply]
     userId: ID
     guestId: ID
-    replies: [Reply]
+    user: User
+    guest: Guest
   }
   
   type Reply {
     id: ID!
     body: String!
     userId: ID
-    # guest: Guest
-    # time: String!
+    user: User
   }
 
   type GuestbookPage {
