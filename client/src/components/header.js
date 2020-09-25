@@ -35,8 +35,8 @@ export const StyledBreadcrumb = withStyles((theme) => ({
 
 
 export default function CustomizedBreadcrumbs() {
-  const { isLoggedIn, logoutUser } = React.useContext(UserContext);
-  console.log('dddddddddddd', isLoggedIn, logoutUser)
+  const { userId, isLoggedIn, logoutUser } = React.useContext(UserContext);
+  // console.log('dddddddddddd', isLoggedIn, logoutUser)
 
   // const [state, setState] = React.useState({
   //   show: false,
@@ -78,7 +78,7 @@ export default function CustomizedBreadcrumbs() {
 
         { isLoggedIn && <>
           <Grid item>
-            <StyledBreadcrumb component={Link} to={`/profile/${1}`} label="Me"
+            <StyledBreadcrumb component={Link} to={`/profile/${userId}`} label="Me"
               icon={<Person fontSize="small" />}
             />
           </Grid>

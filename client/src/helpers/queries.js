@@ -69,6 +69,25 @@ mutation addGuestbook($title: String!, $description: String!){
 }
 `;
 
+export const GETALLGUESTBOOKS = gql`
+query getAllGuestbooks {
+  allGuestbooks {
+    title
+    description
+  }
+}
+`;
+
+export const GETGUESTBOOKSOF = gql`
+query getGuestbooksOf($userId: ID!){
+  guestbooksOf(userId: $userId) {
+    title
+    description
+    id
+  }
+}
+`;
+
 
 // mutation SS{
 //   deleteMessage(messageId:1) {

@@ -47,7 +47,8 @@ const typeDefs = gql`
 
   type Query {
     me: User
-    guestbooks: [Guestbook]!
+    allGuestbooks: [Guestbook]!
+    guestbooksOf(userId: ID!): [Guestbook]!
     guestbook(id: ID!): Guestbook 
   }
   

@@ -8,7 +8,7 @@ export const Page = (props) => <div><Header />{props.children}</div>
 
 export const Home = () => <Page> <Guestbooks /> </Page>
 
-export const Profile = (props) => <Page> <Guestbooks userId={props.userId} /> </Page>
+export const Profile = (props) => <Page> <Guestbooks type='profile' userId={props.userId}/> </Page>
 
 export const SignUp = () => <Page> <FormControl settings='signup'/> </Page>
 

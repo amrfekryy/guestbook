@@ -105,6 +105,6 @@ export default (props) => {
     }
   });
   // if (loading) hide = message.loading('Action in progress..', 0);
-  if (error) return message.error(error.message, 3);
+  if (error) return message.error(error.message, 2);
   return <FormControl {...{ settings, triggerMutation, data }} />
 }

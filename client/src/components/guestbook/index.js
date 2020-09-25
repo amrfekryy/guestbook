@@ -5,7 +5,7 @@ import MessageSection from './messageSection'
 export default (props) => {
   return (
     <>
-      <Card display='main'/>
+      <Card display='main' />
       <MessageSection />
     </>
   )

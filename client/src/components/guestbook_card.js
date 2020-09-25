@@ -43,7 +43,7 @@ export default function SimpleCard(props) {
           title="Guest Book Picture"
         />
         <Typography variant="h5" component="h2">
-          GuestBook Title
+          {props.guestbook.title}
         </Typography>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           Date
@@ -52,7 +52,7 @@ export default function SimpleCard(props) {
           By Author
         </Typography>
         <Typography variant="body2" component="p">
-          Description
+          {props.guestbook.description}
         </Typography>
       </CardContent>
       {props.display !== 'main' && 
@@ -64,7 +64,7 @@ export default function SimpleCard(props) {
             // alignItems="center"
           >
             <Button size="large" color="primary" 
-              component={Link} to={`/guestbook/${props.guestbookId}`}>Open</Button>
+              component={Link} to={`/guestbook/${props.guestbook.id}`}>Open</Button>
           </Grid>
         </CardActions>}
     </Card>

@@ -2,8 +2,9 @@ module.exports = {
 
   Query: {
     // test: () => 'hello',
-    me: (_, __, { dataSources }) => 
-      dataSources.userAPI.findOrCreateUser()
+    // me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
+    allGuestbooks: async (_, __, { dataSources }) => await dataSources.generalAPI.getAllGuestbooks(),
+    guestbooksOf: async (_, args, { dataSources }) => await dataSources.generalAPI.getGuestbooksOf(args),
   },
 
   Mutation: {
