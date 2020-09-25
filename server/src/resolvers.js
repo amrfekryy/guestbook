@@ -5,6 +5,7 @@ module.exports = {
     // me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
     allGuestbooks: async (_, __, { dataSources }) => await dataSources.generalAPI.getAllGuestbooks(),
     guestbooksOf: async (_, args, { dataSources }) => await dataSources.generalAPI.getGuestbooksOf(args),
+    guestbookPage: async (_, args, { dataSources }) => await dataSources.generalAPI.getGuestbookPage(args),
   },
 
   Mutation: {

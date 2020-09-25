@@ -74,6 +74,7 @@ query getAllGuestbooks {
   allGuestbooks {
     title
     description
+    id
   }
 }
 `;
@@ -87,6 +88,27 @@ query getGuestbooksOf($userId: ID!){
   }
 }
 `;
+
+export const GETGUESTBOOKPAGE = gql`
+${GUESTBOOKDATA}
+${MESSAGEDATA}
+${REPLYDATA}
+
+query getGuestbookPage($guestbookId: ID!){
+  guestbookPage(guestbookId: $guestbookId) {
+    guestbook {
+      ...GUESTBOOKDATA
+    }
+    messages {
+      ...MESSAGEDATA
+      replies {
+        ...REPLYDATA
+      }
+    }
+  }
+}
+`;
+
 
 
 // mutation SS{

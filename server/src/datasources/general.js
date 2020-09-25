@@ -54,7 +54,7 @@ class GeneralAPI extends DataSource {
 
   async getGuestbook({ guestbookId }) {
     const guestbook = await this.store.guestbooks.findByPk(guestbookId)
-    return this.extractValues(guestbooks)
+    return this.extractValues(guestbook)
   }
 
   async getMessage({ messageId }) {
@@ -65,6 +65,21 @@ class GeneralAPI extends DataSource {
   async getReply({ replyId }) {
     const reply = await this.store.replies.findByPk(replyId)
     return this.extractValues(reply)
+  }
+
+  async getGuestbookPage({ guestbookId }) {
+    // console.log(userId)
+    const guestbook = await this.getGuestbook({ guestbookId })
+    let messages = await this.getMessagesOf({ guestbookId })
+
+    messages = await messages.reduce( async (list, message) => {
+      const replies = await this.getRepliesOf({ messageId: message.id })
+      list = await list
+      return [...list, {...message, replies}]
+    }, [])
+
+    console.log({ ...guestbook, messages })
+    return { guestbook, messages }
   }
 
   async getUserData({ userId }) {

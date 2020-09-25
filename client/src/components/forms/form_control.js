@@ -12,7 +12,7 @@ import { useNavigate } from "@reach/router"
 import { UserContext } from 'containers/user_context'
 import * as controls from 'components/forms/settings'
 import { DrawerContext } from 'components/input_drawer'
-
+import { client } from 'index'
 
 // export default class SignupForm extends React.Component {
 // MyInput = ({ field, form, ...props }) => {
@@ -91,6 +91,7 @@ export default (props) => {
     },
     addGuestbook: () => {
       hideDrawer()
+      client.resetStore()
       navigate(`/profile/${userId}`)
       message.success(settings.success_message, 2)
     }

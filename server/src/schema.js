@@ -17,14 +17,14 @@ const typeDefs = gql`
     id: ID!
     name: String!
     email: String
-    # messages: [Message]!
+    # messages: [Message]
   }
 
   type Guestbook {
     id: ID!
     title: String!
     description: String!
-    # messages: [Message]
+    messages: [Message]
   }
   
   type Message {
@@ -32,7 +32,7 @@ const typeDefs = gql`
     body: String!
     userId: ID
     guestId: ID
-    # replies: [Reply]
+    replies: [Reply]
   }
   
   type Reply {
@@ -42,7 +42,13 @@ const typeDefs = gql`
     # guest: Guest
     # time: String!
   }
-  
+
+  type GuestbookPage {
+    guestbook: Guestbook
+    messages: [Message]
+  }
+
+
   ## queries ##
 
   type Query {
@@ -50,6 +56,7 @@ const typeDefs = gql`
     allGuestbooks: [Guestbook]!
     guestbooksOf(userId: ID!): [Guestbook]!
     guestbook(id: ID!): Guestbook 
+    guestbookPage(guestbookId: ID!): GuestbookPage
   }
   
   ## mutations ##
