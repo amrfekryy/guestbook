@@ -16,6 +16,7 @@ module.exports = {
     addReply: async (_, args, { dataSources }) => await dataSources.userAPI.addReply(args),
     updateMessage: async (_, args, { dataSources }) => await dataSources.userAPI.updateMessage(args),
     updateReply: async (_, args, { dataSources }) => await dataSources.userAPI.updateReply(args),
+    deleteGuestbook: async (_, args, { dataSources }) => await dataSources.userAPI.deleteGuestbook(args),
     deleteMessage: async (_, args, { dataSources }) => await dataSources.userAPI.deleteMessage(args),
     deleteReply: async (_, args, { dataSources }) => await dataSources.userAPI.deleteReply(args),
   }    

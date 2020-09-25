@@ -105,7 +105,7 @@ export default (props) => {
       // alert(JSON.stringify(data, null, 2));
     }
   });
-  // if (loading) hide = message.loading('Action in progress..', 0);
+  // if (loading) // do something
   if (error) return message.error(error.message, 2);
   return <FormControl {...{ settings, triggerMutation, data }} />
 }

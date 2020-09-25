@@ -115,6 +115,14 @@ query getGuestbookPage($guestbookId: ID!){
 }
 `;
 
+export const DELETEGUESTBOOK = gql`
+mutation deleteGuestbook($guestbookId: ID!){
+  deleteGuestbook(guestbookId: $guestbookId) {
+    success,
+    resMessage,
+  }
+}
+`;
 
 
 // mutation SS{

@@ -6,10 +6,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Image from 'assets/guestbook.jpg'
 import { Link } from '@reach/router';
+import { UserContext } from 'containers/user_context'
+import { message } from 'antd'
+import { useMutation } from '@apollo/client'
+import { DELETEGUESTBOOK } from 'helpers/queries'
+import { client } from 'index'
+import { useNavigate } from "@reach/router"
 
 const useStyles = makeStyles({
   root: {
@@ -34,6 +39,25 @@ const useStyles = makeStyles({
 export default function SimpleCard(props) {
   const classes = useStyles();
 
+  const { userId } = React.useContext(UserContext);
+  const navigate = useNavigate()
+
+  const belongsToUser = props.guestbook.userId === userId
+  const notGuestbookPage = props.display !== 'main'
+
+  const [deleteGuestbook, { data, loading, error }] = useMutation(DELETEGUESTBOOK, {
+    onCompleted(data) {
+      if (data.deleteGuestbook && data.deleteGuestbook.success) {
+        navigate(`/profile/${userId}`)
+        client.resetStore()
+        message.success('Guest book was deleted successfully', 2);
+      } else message.error(data.deleteGuestbook.resMessage, 2);
+    }
+  });
+  // if (loading) // do something
+  if (error) return message.error(error.message, 2);
+
+
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -55,18 +79,23 @@ export default function SimpleCard(props) {
           {props.guestbook.description}
         </Typography>
       </CardContent>
-      {props.display !== 'main' && 
-        <CardActions>
-          <Grid   
-            container
-            direction="row"
-            justify="center"
-            // alignItems="center"
-          >
-            <Button size="large" color="primary" 
-              component={Link} to={`/guestbook/${props.guestbook.id}`}>Open</Button>
-          </Grid>
-        </CardActions>}
+      <CardActions>
+        <Grid   
+          container
+          direction="row"
+          justify="center"
+          // alignItems="center"
+        >
+          {notGuestbookPage &&
+            <Button size="small" color="primary" 
+              component={Link} to={`/guestbook/${props.guestbook.id}`}>Open</Button>}
+          {belongsToUser && 
+            <Button size="small" color="primary">Update</Button>}
+          {belongsToUser && 
+            <Button size="small" color="secondary" 
+              onClick={() => deleteGuestbook({ variables: { guestbookId: props.guestbook.id }})}>Delete</Button>}
+        </Grid>
+      </CardActions>
     </Card>
   );
 }

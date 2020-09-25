@@ -23,6 +23,7 @@ const server = new ApolloServer({
     const data = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded_token) => {
       if (err) return { user: null };
       const user = await store.users.findOne({ where: { email: decoded_token.email } });
+      if (!user) return { user: null };
       return { user: { ...user.dataValues } };
     })
     console.log('CONTEXT', data)

@@ -132,12 +132,47 @@ class UserAPI extends DataSource {
     const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
     return { success: true, reply, message, guestbook }
   }
+
+  extractIds(list) {
+    return list.map(obj => obj.id)
+  }
+
+  async deleteGuestbook({ guestbookId }) {
+    // const { response, youAreNot } = this.notLoggedIn()
+    // if (youAreNot) return response
+
+    const generalAPI = new GeneralAPI({ store: this.store })
+    const { guestbook , messages } = await generalAPI.getGuestbookPage({ guestbookId })
+    
+    // get ids of related messages and replies
+    const messagesIds = this.extractIds(messages)
+    const repliesIds = messages.reduce((list, message) => {
+      return [...list, ...this.extractIds(message.replies)]
+    }, [])
+    
+    // delete related messages and replies
+    await repliesIds.map(async replyId => await this.deleteReply({ replyId }))
+    await messagesIds.map(async messageId => await this.deleteMessage({ messageId }))
+    
+    // delete guestbook
+    const guestbookDB = await this.store.guestbooks.findByPk(guestbook.id)
+    await guestbookDB.destroy()
+
+    return { success: true }
+  }
+
   async deleteMessage({ messageId }) {
+    // const { response, youAreNot } = this.notLoggedIn()
+    // if (youAreNot) return response
+
     const message = await this.store.messages.findByPk(messageId)
     await message.destroy()
     return { success: true }
   }
   async deleteReply({ replyId }) {
+    // const { response, youAreNot } = this.notLoggedIn()
+    // if (youAreNot) return response
+
     const reply = await this.store.replies.findByPk(replyId)
     await reply.destroy()
     return { success: true }

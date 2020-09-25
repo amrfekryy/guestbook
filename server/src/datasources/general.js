@@ -108,7 +108,7 @@ class GeneralAPI extends DataSource {
   }
 
   async getGuestbookPage({ guestbookId }) {
-    // console.log(userId)
+    // console.log('ffffffffff', guestbookId)
     let guestbook = await this.getGuestbook({ guestbookId })
     
     let messages = await this.getMessagesOf({ guestbookId })

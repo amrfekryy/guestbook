@@ -86,6 +86,8 @@ const typeDefs = gql`
     
     updateMessage(messageId: ID! body: String!): Response!
     updateReply(replyId: ID! body: String!): Response!
+
+    deleteGuestbook(guestbookId: ID!): Response!
     deleteMessage(messageId: ID!): Response!
     deleteReply(replyId: ID!): Response!
 
