@@ -1,11 +1,11 @@
-import { ADDMESSAGE, } from 'helpers/queries'
+import { ADDREPLY, UPDATEREPLY, DELETEREPLY } from 'helpers/queries'
 import { createSchema } from '../validationSchema'
 
 export const addReply = {
   entry: true,
   name: 'addReply',
   text: 'Add Reply',
-  mutation: '',
+  mutation: ADDREPLY,
   success_message: 'Reply was added',
   validationSchema: createSchema(['body']),
   fields: {
@@ -13,7 +13,7 @@ export const addReply = {
     messageId: {skip: true},
     body: {
       type: "text", 
-      label: "Message", 
+      label: "Reply", 
       required: true,
       multiline: true,
     },
@@ -24,15 +24,22 @@ export const updateReply = {
   entry: true,
   name: 'updateReply',
   text: 'Update Reply',
-  mutation: ADDMESSAGE,
+  mutation: UPDATEREPLY,
   success_message: 'Reply was updated',
   validationSchema: createSchema(['body']),
   fields: {
     body: {
       type: "text", 
-      label: "Message", 
+      label: "Reply", 
       required: true,
       multiline: true,
     },
   }
+}
+
+export const deleteReply = {
+  name: 'deleteReply',
+  text: 'Delete Reply',
+  mutation: DELETEREPLY,
+  success_message: 'Reply was deleted',
 }

@@ -162,6 +162,34 @@ mutation deleteMessage($id: ID!){
 }
 `;
 
+export const ADDREPLY = gql`
+mutation addReply($messageId: ID!, $userId: ID!, $body: String!){
+  addReply(messageId: $messageId, userId: $userId, body: $body) {
+    success,
+    resMessage,
+  }
+}
+`;
+
+export const UPDATEREPLY = gql`
+mutation updateReply($id: ID!, $body: String!){
+  updateReply(id: $id, body: $body) {
+    success,
+    resMessage,
+  }
+}
+`;
+
+export const DELETEREPLY = gql`
+mutation deleteReply($id: ID!){
+  deleteReply(id: $id) {
+    success,
+    resMessage,
+  }
+}
+`;
+
+
 
 // mutation SS{
 //   deleteMessage(messageId:1) {

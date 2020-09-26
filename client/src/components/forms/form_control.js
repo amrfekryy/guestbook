@@ -117,7 +117,18 @@ export default (props) => {
       // navigate(`/profile/${userId}`)
       message.success(settings.success_message, 2)
     },
-
+    addReply: () => {
+      hideDrawer()
+      client.resetStore()
+      // navigate(`/profile/${userId}`)
+      message.success(settings.success_message, 2)
+    },
+    updateReply: () => {
+      hideDrawer()
+      client.resetStore()
+      // navigate(`/profile/${userId}`)
+      message.success(settings.success_message, 2)
+    },
   }
 
   const [triggerMutation, { data, loading, error }] = useMutation(settings.mutation, {

@@ -19,7 +19,7 @@ export default function AlignItemsList(props) {
     <List className={classes.root}>
         {props.comments.map((comment, index)=> 
           <div style={{marginLeft: props.commentType === 'Reply' ? '6ch' : ''}}>
-            <Comment {...{ comment, commentType: props.commentType }}/>
+            <Comment {...{ comment, commentType: props.commentType, parent: props.parent }}/>
             {(index !== props.comments.length - 1) && <Divider variant="inset" component="li" />}
           </div>
         )}

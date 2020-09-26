@@ -26,7 +26,7 @@ const server = new ApolloServer({
       if (!user) return { user: null };
       return { user: { ...user.dataValues } };
     })
-    console.log('CONTEXT', data)
+    // console.log('CONTEXT', data)
     return data
   },
 

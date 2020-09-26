@@ -82,7 +82,8 @@ const typeDefs = gql`
     ): Response!
     
     addReply(
-      messageId: ID! 
+      messageId: ID!
+      userId: ID 
       body: String!
     ): Response!
     

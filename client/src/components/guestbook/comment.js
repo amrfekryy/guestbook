@@ -12,12 +12,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ConnectDrawer from 'components/input_drawer'
 import DeleteAction from 'components/delete_action'
+import { UserContext } from 'containers/user_context'
 
 const CommentActions = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget)
   const handleClose = () => setAnchorEl(null)
+
+  const { userId, isLoggedIn } = React.useContext(UserContext);
+  const { comment, commentType } = props
 
   return <div>
     <IconButton
@@ -34,13 +38,13 @@ const CommentActions = (props) => {
       open={open}
       onClose={handleClose}
     >
-      <ConnectDrawer settings='addReply'>
+      <ConnectDrawer settings='addReply' currentValues={{messageId: comment.id, userId}}>
         <MenuItem onClick={handleClose}>reply</MenuItem>
       </ConnectDrawer>
-      <ConnectDrawer settings={`update${props.commentType}`} currentValues={props.comment}>
+      <ConnectDrawer settings={`update${commentType}`} currentValues={comment}>
         <MenuItem onClick={handleClose}>update</MenuItem>
       </ConnectDrawer>
-      <DeleteAction settings={`delete${props.commentType}`} id={props.comment.id}>
+      <DeleteAction settings={`delete${commentType}`} id={comment.id}>
         <MenuItem onClick={handleClose}>delete</MenuItem>
       </DeleteAction>
     </Menu>
@@ -88,7 +92,7 @@ export default function Comment(props) {
             </React.Fragment>
           }
         />      
-        <CommentActions comment={props.comment} commentType={props.commentType}/>
+        <CommentActions {...props}/>
       </ListItem>
 
       {isMessage && hasReplies && <CommentList commentType='Reply' comments={replies}/>}

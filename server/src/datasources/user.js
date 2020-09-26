@@ -97,17 +97,17 @@ class UserAPI extends DataSource {
     return { success: true }
   }
   
-  async addReply({messageId, body}) {
+  async addReply({ userId, messageId, body }) {
     const { response, youAreNot } = this.notLoggedIn()
     if (youAreNot) return response
 
     const reply = await this.store.replies.create({
       messageId, body,
-      userId: this.context.user.id
+      userId: userId
     })
-    const message = await this.store.messages.findByPk(messageId);
-    const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
-    return { success: true, reply, message, guestbook }
+    // const message = await this.store.messages.findByPk(messageId);
+    // const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
+    return { success: true }
   }
 
   async updateGuestbook({ id, title, description }) {
@@ -137,7 +137,7 @@ class UserAPI extends DataSource {
   async updateReply({ id, body }) {
     const { response, youAreNot } = this.notLoggedIn()
     if (youAreNot) return response
-
+    console.log({ id, body })
     const reply = await this.store.replies.findByPk(id);
     reply.body = body
     await reply.save()
