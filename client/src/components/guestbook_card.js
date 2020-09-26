@@ -15,6 +15,7 @@ import { useMutation } from '@apollo/client'
 import { DELETEGUESTBOOK } from 'helpers/queries'
 import { client } from 'index'
 import { useNavigate } from "@reach/router"
+import ConnectDrawer from 'components/input_drawer'
 
 const useStyles = makeStyles({
   root: {
@@ -90,7 +91,9 @@ export default function SimpleCard(props) {
             <Button size="small" color="primary" 
               component={Link} to={`/guestbook/${props.guestbook.id}`}>Open</Button>}
           {belongsToUser && 
-            <Button size="small" color="primary">Update</Button>}
+            <ConnectDrawer settings='updateGuestbook' currentValues={props.guestbook}>
+              <Button size="small" color="primary">Update</Button>
+            </ConnectDrawer>}
           {belongsToUser && 
             <Button size="small" color="secondary" 
               onClick={() => deleteGuestbook({ variables: { guestbookId: props.guestbook.id }})}>Delete</Button>}

@@ -124,6 +124,14 @@ mutation deleteGuestbook($guestbookId: ID!){
 }
 `;
 
+export const UPDATEGUESTBOOK = gql`
+mutation updateGuestbook($id: ID!, $title: String!, $description: String!){
+  updateGuestbook(id: $id, title: $title, description: $description) {
+    success,
+    resMessage,
+  }
+}
+`;
 
 // mutation SS{
 //   deleteMessage(messageId:1) {

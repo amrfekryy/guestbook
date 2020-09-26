@@ -83,7 +83,7 @@ export default function CustomizedBreadcrumbs() {
             />
           </Grid>
           <Grid item>
-            <ConnectDrawer>
+            <ConnectDrawer settings='addGuestbook'>
               <StyledBreadcrumb label="Add Guestbook" 
                 // component={Link} to={`/profile/${1}`}
                 icon={<AddCircle fontSize="small" />}

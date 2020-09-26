@@ -1,5 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
@@ -20,7 +21,7 @@ import { client } from 'index'
 // };
 
 const FormControl = (props) => {
-  const { settings, triggerMutation } = props
+  const { settings, triggerMutation, currentValues={} } = props
 
   return (
     <Grid
@@ -32,10 +33,10 @@ const FormControl = (props) => {
       <Grid item xs={12} sm={6} lg={4} style={settings.entry ? {padding: '50px'} : {}}>
         <Paper elevation={3} >
           <Formik
-            // set field names to empty strings
-            initialValues={Object.keys(settings.fields).reduce((obj, key) => ({...obj, [key]: ''}) , {})}
+            // set initialValues to empty strings 
+            initialValues={Object.keys(settings.fields).reduce((obj, key) => ({...obj, [key]: currentValues[key] || ''}) , {})}
             validationSchema={settings.validationSchema || ''}
-            onSubmit={values => triggerMutation({ variables: { ...values }})}
+            onSubmit={values => triggerMutation({ variables: { ...values , id: currentValues.id }})}
           >
             <Form>
               <Grid
@@ -51,7 +52,8 @@ const FormControl = (props) => {
                   <Field name={fieldName}>
                     {({ field, meta }) => {
                       const error = meta.touched && meta.error ? { error: true, helperText: meta.error } : null
-                      return <TextField variant="outlined" {...field} {...error} {...fieldProps} />;
+                      return <TextField variant="outlined" {...field} {...error} {...fieldProps} 
+                      inputProps={{defaultValue: currentValues[fieldName] || ''}}/>;
                     }}
                   </Field>
                 </Grid>
@@ -94,6 +96,12 @@ export default (props) => {
       client.resetStore()
       navigate(`/profile/${userId}`)
       message.success(settings.success_message, 2)
+    },
+    updateGuestbook: () => {
+      hideDrawer()
+      client.resetStore()
+      // navigate(`/profile/${userId}`)
+      message.success(settings.success_message, 2)
     }
   }
 
@@ -107,5 +115,5 @@ export default (props) => {
   });
   // if (loading) // do something
   if (error) return message.error(error.message, 2);
-  return <FormControl {...{ settings, triggerMutation, data }} />
+  return <FormControl {...{ settings, triggerMutation, data, currentValues: props.currentValues }} />
 }

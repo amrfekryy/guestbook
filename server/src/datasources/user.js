@@ -109,6 +109,19 @@ class UserAPI extends DataSource {
     return { success: true, reply, message, guestbook }
   }
 
+  async updateGuestbook({ id, title, description }) {
+    const { response, youAreNot } = this.notLoggedIn()
+    if (youAreNot) return response
+
+    const guestbook = await this.store.guestbooks.findByPk(id);
+    guestbook.title = title
+    guestbook.description = description
+    await guestbook.save()
+    
+    // const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
+    return { success: true }
+  }
+
   async updateMessage({ messageId, body }) {
     const { response, youAreNot } = this.notLoggedIn()
     if (youAreNot) return response

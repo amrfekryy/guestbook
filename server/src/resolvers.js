@@ -14,6 +14,7 @@ module.exports = {
     addGuestbook: async (_, args, { dataSources }) => await dataSources.userAPI.addGuestbook(args),
     addMessage: async (_, args, { dataSources }) => await dataSources.userAPI.addMessage(args),
     addReply: async (_, args, { dataSources }) => await dataSources.userAPI.addReply(args),
+    updateGuestbook: async (_, args, { dataSources }) => await dataSources.userAPI.updateGuestbook(args),
     updateMessage: async (_, args, { dataSources }) => await dataSources.userAPI.updateMessage(args),
     updateReply: async (_, args, { dataSources }) => await dataSources.userAPI.updateReply(args),
     deleteGuestbook: async (_, args, { dataSources }) => await dataSources.userAPI.deleteGuestbook(args),

@@ -23,8 +23,9 @@ export default function TemporaryDrawer(props) {
           <div onClick={ () => setState({ show: true }) }>
             {props.children}
           </div>
+
           <Drawer anchor={'bottom'} open={state.show} onClose={ hideDrawer }>
-            <FormControl settings='addGuestbook'/>
+            <FormControl {...props}/>
           </Drawer>
 
         </DrawerContext.Provider>
