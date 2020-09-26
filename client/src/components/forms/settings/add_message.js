@@ -44,8 +44,9 @@ export const addGuestMessage = {
   text: 'Add Message',
   mutation: ADDMESSAGE,
   success_message: 'Message was added',
-  validationSchema: createSchema(['guestName', 'guestEmail', 'body']),
+  validationSchema: createSchema(['body']),
   fields: {
+    guestbookId: {skip: true},
     guestName: {
       type: "text", 
       label: "Name", 
@@ -53,8 +54,8 @@ export const addGuestMessage = {
     },
     guestEmail: {
       type: "email", 
-      label: "Email", 
-      required: true,
+      label: "Email",
+      placeholder: "Optional" 
     },
     body: {
       type: "text", 

@@ -136,8 +136,8 @@ mutation deleteGuestbook($guestbookId: ID!){
 `;
 
 export const ADDMESSAGE = gql`
-mutation addMessage($userId: ID, $guestbookId: ID!, $body: String!){
-  addMessage(userId: $userId, guestbookId: $guestbookId, body: $body) {
+mutation addMessage($userId: ID, $guestbookId: ID!, $body: String!, $guestName: String, $guestEmail: String){
+  addMessage(userId: $userId, guestbookId: $guestbookId, body: $body, guestName: $guestName, guestEmail: $guestEmail) {
     success,
     resMessage,
   }

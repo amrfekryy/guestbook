@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 export default function SimpleCard(props) {
   const classes = useStyles();
 
-  const { userId } = React.useContext(UserContext);
+  const { userId, isLoggedIn } = React.useContext(UserContext);
   const navigate = useNavigate()
 
   const belongsToUser = props.guestbook.userId === userId
@@ -86,7 +86,12 @@ export default function SimpleCard(props) {
           justify="center"
           // alignItems="center"
         >
-          {isGuestbookPage && 
+          {isGuestbookPage && !isLoggedIn && 
+            <ConnectDrawer settings='addGuestMessage' currentValues={{ guestbookId, guestName: 'Anonymous' }}>
+              <Button size="small" color="primary">Add Message</Button>
+            </ConnectDrawer>}
+
+          {isGuestbookPage && isLoggedIn &&
             <ConnectDrawer settings='addMessage' currentValues={{ userId, guestbookId }}>
               <Button size="small" color="primary">Add Message</Button>
             </ConnectDrawer>}
