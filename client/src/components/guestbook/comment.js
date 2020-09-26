@@ -20,35 +20,46 @@ const CommentActions = (props) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget)
   const handleClose = () => setAnchorEl(null)
 
-  const { userId, isLoggedIn } = React.useContext(UserContext);
   const { comment, commentType } = props
+  const { userId, isLoggedIn } = React.useContext(UserContext);
+  const belongsToUser = comment.userId === userId
+  const isMessage = commentType === 'Message'
+  const isReply = commentType === 'Reply'
 
-  return <div>
-    <IconButton
-      aria-label="more"
-      aria-controls="long-menu"
-      aria-haspopup="true"
-      onClick={handleClick}
-    ><MoreVertIcon />
-    </IconButton>
-    <Menu
-      id="long-menu"
-      anchorEl={anchorEl}
-      keepMounted
-      open={open}
-      onClose={handleClose}
-    >
-      <ConnectDrawer settings='addReply' currentValues={{messageId: comment.id, userId}}>
-        <MenuItem onClick={handleClose}>reply</MenuItem>
-      </ConnectDrawer>
-      <ConnectDrawer settings={`update${commentType}`} currentValues={comment}>
-        <MenuItem onClick={handleClose}>update</MenuItem>
-      </ConnectDrawer>
-      <DeleteAction settings={`delete${commentType}`} id={comment.id}>
-        <MenuItem onClick={handleClose}>delete</MenuItem>
-      </DeleteAction>
-    </Menu>
-  </div>
+  return (isMessage && isLoggedIn) || (isReply && belongsToUser) ?
+    <div>
+      <IconButton
+        aria-label="more"
+        aria-controls="long-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      ><MoreVertIcon />
+      </IconButton>
+      <Menu
+        id="long-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={open}
+        onClose={handleClose}
+      >
+        {isMessage && 
+        <ConnectDrawer settings='addReply' currentValues={{messageId: comment.id, userId}}>
+          <MenuItem onClick={handleClose}>reply</MenuItem>
+        </ConnectDrawer>}
+        
+        {belongsToUser &&
+        <ConnectDrawer settings={`update${commentType}`} currentValues={comment}>
+          <MenuItem onClick={handleClose}>update</MenuItem>
+        </ConnectDrawer>}
+
+        {belongsToUser &&
+        <DeleteAction settings={`delete${commentType}`} id={comment.id}>
+          <MenuItem onClick={handleClose}>delete</MenuItem>
+        </DeleteAction>}
+
+      </Menu>
+    </div>
+  : <div></div>
 }
 
 
@@ -65,7 +76,6 @@ export default function Comment(props) {
 
   const authorName = user ? user.name : guest.name
 
-  const isReply = commentType === 'Reply'
   const isMessage = commentType === 'Message'
   const hasReplies = replies.length > 0
 
