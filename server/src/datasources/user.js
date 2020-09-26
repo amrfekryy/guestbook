@@ -78,22 +78,23 @@ class UserAPI extends DataSource {
     return { success: true, guestbook, guestbooks, userId: this.context.user.id}
   }
 
-  async addMessage({ guestbookId, body, guestName, guestEmail }) {
+  async addMessage({ userId, guestbookId, body, guestName, guestEmail }) {
     const { response, youAreNot } = this.notLoggedIn()
     
-    const messageAuthor = { guestId: null, userId: null}
+    const messageAuthor = { guestId: null, userId: userId}
     if (youAreNot) {
       const guest = await this.store.guests.create({ name: guestName, email: guestEmail })
       messageAuthor.guestId = guest.dataValues.id
-    } else {
-      messageAuthor.userId = this.context.user.id
-    }
+    } 
+    // else {
+    //   messageAuthor.userId = this.context.user.id
+    // }
 
     const message = await this.store.messages.create({
       guestbookId, body, ...messageAuthor
     })
-    const guestbook = await this.store.guestbooks.findByPk(guestbookId);
-    return { success: true, message, guestbook }
+    // const guestbook = await this.store.guestbooks.findByPk(guestbookId);
+    return { success: true }
   }
   
   async addReply({messageId, body}) {

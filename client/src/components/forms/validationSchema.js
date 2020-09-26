@@ -8,6 +8,7 @@ export const createSchema = fields => {
     password2: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
     title: Yup.string().required('Required'),
     description: Yup.string().required('Required'),
+    body: Yup.string().required('Required'),
   }
   
   const selections = fields.reduce((obj, field) => ({...obj, [field]: validations[field]}), {})

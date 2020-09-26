@@ -15,7 +15,7 @@ const typeDefs = gql`
 
   type Guest {
     id: ID!
-    name: String!
+    name: String
     email: String
     # messages: [Message]
   }
@@ -73,6 +73,7 @@ const typeDefs = gql`
     addGuestbook(title: String, description: String): Response!
 
     addMessage(
+      userId: ID
       guestbookId: ID!
       body: String!
       guestName: String

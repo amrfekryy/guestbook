@@ -1,3 +1,5 @@
 export * from './login'
 export * from './signup'
 export * from './add_guestbook'
+export * from './add_message'
+export * from './add_reply'

@@ -62,18 +62,6 @@ mutation login($email: String!, $password: String!) {
 }
 `;
 
-export const ADDGUESTBOOK = gql`
-mutation addGuestbook($title: String!, $description: String!){
-  addGuestbook(title: $title, description: $description) {
-    success,
-    resMessage,
-    guestbooks {
-      title
-      description
-    }
-  }
-}
-`;
 
 export const GETALLGUESTBOOKS = gql`
 ${GUESTBOOKDATA}
@@ -115,11 +103,16 @@ query getGuestbookPage($guestbookId: ID!){
 }
 `;
 
-export const DELETEGUESTBOOK = gql`
-mutation deleteGuestbook($guestbookId: ID!){
-  deleteGuestbook(guestbookId: $guestbookId) {
+
+export const ADDGUESTBOOK = gql`
+mutation addGuestbook($title: String!, $description: String!){
+  addGuestbook(title: $title, description: $description) {
     success,
     resMessage,
+    # guestbooks {
+    #   title
+    #   description
+    # }
   }
 }
 `;
@@ -132,6 +125,26 @@ mutation updateGuestbook($id: ID!, $title: String!, $description: String!){
   }
 }
 `;
+
+export const DELETEGUESTBOOK = gql`
+mutation deleteGuestbook($guestbookId: ID!){
+  deleteGuestbook(guestbookId: $guestbookId) {
+    success,
+    resMessage,
+  }
+}
+`;
+
+export const ADDMESSAGE = gql`
+mutation addMessage($userId: ID, $guestbookId: ID!, $body: String!){
+  addMessage(userId: $userId, guestbookId: $guestbookId, body: $body) {
+    success,
+    resMessage,
+  }
+}
+`;
+
+
 
 // mutation SS{
 //   deleteMessage(messageId:1) {

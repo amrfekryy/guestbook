@@ -12,7 +12,7 @@ import { Link } from '@reach/router';
 import { UserContext } from 'containers/user_context'
 import { message } from 'antd'
 import { useMutation } from '@apollo/client'
-import { DELETEGUESTBOOK } from 'helpers/queries'
+import { DELETEGUESTBOOK, ADDMESSAGE } from 'helpers/queries'
 import { client } from 'index'
 import { useNavigate } from "@reach/router"
 import ConnectDrawer from 'components/input_drawer'
@@ -44,7 +44,7 @@ export default function SimpleCard(props) {
   const navigate = useNavigate()
 
   const belongsToUser = props.guestbook.userId === userId
-  const notGuestbookPage = props.display !== 'main'
+  const isGuestbookPage = props.display === 'main'
 
   const [deleteGuestbook, { data, loading, error }] = useMutation(DELETEGUESTBOOK, {
     onCompleted(data) {
@@ -58,11 +58,10 @@ export default function SimpleCard(props) {
   // if (loading) // do something
   if (error) return message.error(error.message, 2);
 
-  const { guestbook: { id: guestbookId, title, description, user, createdAt } } = props
-  
+
+  const { guestbook: { id: guestbookId, title, description, user, createdAt } } = props  
   const timestamp = new Date(+createdAt)
   // alert(JSON.stringify(+createdAt))
-  
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -87,9 +86,14 @@ export default function SimpleCard(props) {
           justify="center"
           // alignItems="center"
         >
-          {notGuestbookPage &&
+          {isGuestbookPage && 
+            <ConnectDrawer settings='addMessage' currentValues={{ userId, guestbookId }}>
+              <Button size="small" color="primary">Add Message</Button>
+            </ConnectDrawer>}
+
+          {!isGuestbookPage &&
             <Button size="small" color="primary" 
-              component={Link} to={`/guestbook/${guestbookId}`}>Open</Button>}
+              component={Link} to={`/guestbook/${guestbookId}`}>Read</Button>}
 
           {belongsToUser && 
             <ConnectDrawer settings='updateGuestbook' currentValues={props.guestbook}>

@@ -47,6 +47,8 @@ const FormControl = (props) => {
                 spacing={3}
               >
                 {Object.keys(settings.fields).map(fieldName => {
+                  if (settings.fields[fieldName].skip)
+                    return <></>
                   const fieldProps = settings.fields[fieldName]
                   return <Grid item xs={12}>
                   <Field name={fieldName}>
@@ -102,7 +104,13 @@ export default (props) => {
       client.resetStore()
       // navigate(`/profile/${userId}`)
       message.success(settings.success_message, 2)
-    }
+    },
+    addMessage: () => {
+      hideDrawer()
+      client.resetStore()
+      // navigate(`/profile/${userId}`)
+      message.success(settings.success_message, 2)
+    },
   }
 
   const [triggerMutation, { data, loading, error }] = useMutation(settings.mutation, {
