@@ -58,7 +58,11 @@ export default function SimpleCard(props) {
   // if (loading) // do something
   if (error) return message.error(error.message, 2);
 
-
+  const { guestbook: { id: guestbookId, title, description, user, createdAt } } = props
+  
+  const timestamp = new Date(+createdAt)
+  // alert(JSON.stringify(+createdAt))
+  
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -67,19 +71,15 @@ export default function SimpleCard(props) {
           image={Image}
           title="Guest Book Picture"
         />
-        <Typography variant="h5" component="h2">
-          {props.guestbook.title}
-        </Typography>
+        <Typography variant="h5" component="h2">{ title }</Typography>
+
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Created by {props.guestbook.user.name} at {props.guestbook.createdAt}
+          Created by {user.name} on {timestamp.toLocaleString()}
         </Typography>
-        {/* <Typography className={classes.pos} color="textSecondary">
-          By Author
-        </Typography> */}
-        <Typography variant="body2" component="p">
-          {props.guestbook.description}
-        </Typography>
+
+        <Typography variant="body2" component="p">{ description }</Typography>
       </CardContent>
+
       <CardActions>
         <Grid   
           container
@@ -89,14 +89,17 @@ export default function SimpleCard(props) {
         >
           {notGuestbookPage &&
             <Button size="small" color="primary" 
-              component={Link} to={`/guestbook/${props.guestbook.id}`}>Open</Button>}
+              component={Link} to={`/guestbook/${guestbookId}`}>Open</Button>}
+
           {belongsToUser && 
             <ConnectDrawer settings='updateGuestbook' currentValues={props.guestbook}>
               <Button size="small" color="primary">Update</Button>
             </ConnectDrawer>}
+
           {belongsToUser && 
             <Button size="small" color="secondary" 
-              onClick={() => deleteGuestbook({ variables: { guestbookId: props.guestbook.id }})}>Delete</Button>}
+              onClick={() => deleteGuestbook({ variables: { guestbookId }})}>Delete</Button>}
+        
         </Grid>
       </CardActions>
     </Card>

@@ -28,7 +28,7 @@ export default function GuestbooksList(props) {
   if (error) return message.error(error.message, 2);
   // if (loading) // do something
   const allGuestbooks = data && data[settings.queryName] ? data[settings.queryName] : []
-
+  // alert(JSON.stringify(data))
   return (
     <div>
       <Grid           
