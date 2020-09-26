@@ -43,7 +43,8 @@ const typeDefs = gql`
   type Reply {
     id: ID!
     body: String!
-    userId: ID
+    messageId: ID!
+    userId: ID!
     user: User
   }
 
@@ -89,9 +90,9 @@ const typeDefs = gql`
     updateMessage(id: ID! body: String!): Response!
     updateReply(id: ID! body: String!): Response!
 
-    deleteGuestbook(guestbookId: ID!): Response!
-    deleteMessage(messageId: ID!): Response!
-    deleteReply(replyId: ID!): Response!
+    deleteGuestbook(id: ID!): Response!
+    deleteMessage(id: ID!): Response!
+    deleteReply(id: ID!): Response!
 
   }
   

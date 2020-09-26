@@ -24,7 +24,7 @@ export default function SimpleCard(props) {
         <Typography variant="h5" component="h2">
           Messages
         </Typography>
-        <CommentList commentsType='messages' {...{ comments }}/>
+        <CommentList commentType='Message' {...{ comments }}/>
         {!comments.length && <div>No messages yet for this guestbook</div>}
       </CardContent>
     </Card>

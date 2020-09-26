@@ -10,12 +10,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Image from 'assets/guestbook.jpg'
 import { Link } from '@reach/router';
 import { UserContext } from 'containers/user_context'
-import { message } from 'antd'
-import { useMutation } from '@apollo/client'
-import { DELETEGUESTBOOK, ADDMESSAGE } from 'helpers/queries'
-import { client } from 'index'
-import { useNavigate } from "@reach/router"
 import ConnectDrawer from 'components/input_drawer'
+import DeleteAction from 'components/delete_action'
 
 const useStyles = makeStyles({
   root: {
@@ -41,23 +37,9 @@ export default function SimpleCard(props) {
   const classes = useStyles();
 
   const { userId, isLoggedIn } = React.useContext(UserContext);
-  const navigate = useNavigate()
 
   const belongsToUser = props.guestbook.userId === userId
   const isGuestbookPage = props.display === 'main'
-
-  const [deleteGuestbook, { data, loading, error }] = useMutation(DELETEGUESTBOOK, {
-    onCompleted(data) {
-      if (data.deleteGuestbook && data.deleteGuestbook.success) {
-        navigate(`/profile/${userId}`)
-        client.resetStore()
-        message.success('Guest book was deleted successfully', 2);
-      } else message.error(data.deleteGuestbook.resMessage, 2);
-    }
-  });
-  // if (loading) // do something
-  if (error) return message.error(error.message, 2);
-
 
   const { guestbook: { id: guestbookId, title, description, user, createdAt } } = props  
   const timestamp = new Date(+createdAt)
@@ -106,8 +88,9 @@ export default function SimpleCard(props) {
             </ConnectDrawer>}
 
           {belongsToUser && 
-            <Button size="small" color="secondary" 
-              onClick={() => deleteGuestbook({ variables: { guestbookId }})}>Delete</Button>}
+            <DeleteAction settings="deleteGuestbook" id={guestbookId}>
+              <Button size="small" color="secondary">Delete</Button>
+            </DeleteAction>}
         
         </Grid>
       </CardActions>

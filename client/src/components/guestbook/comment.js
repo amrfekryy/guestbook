@@ -6,6 +6,47 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import CommentList from './commentList'
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ConnectDrawer from 'components/input_drawer'
+import DeleteAction from 'components/delete_action'
+
+const CommentActions = (props) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => setAnchorEl(event.currentTarget)
+  const handleClose = () => setAnchorEl(null)
+
+  return <div>
+    <IconButton
+      aria-label="more"
+      aria-controls="long-menu"
+      aria-haspopup="true"
+      onClick={handleClick}
+    ><MoreVertIcon />
+    </IconButton>
+    <Menu
+      id="long-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={open}
+      onClose={handleClose}
+    >
+      <ConnectDrawer settings='addReply'>
+        <MenuItem onClick={handleClose}>reply</MenuItem>
+      </ConnectDrawer>
+      <ConnectDrawer settings={`update${props.commentType}`} currentValues={props.comment}>
+        <MenuItem onClick={handleClose}>update</MenuItem>
+      </ConnectDrawer>
+      <DeleteAction settings={`delete${props.commentType}`} id={props.comment.id}>
+        <MenuItem onClick={handleClose}>delete</MenuItem>
+      </DeleteAction>
+    </Menu>
+  </div>
+}
+
 
 const useStyles = makeStyles((theme) => ({
   inline: {
@@ -13,11 +54,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AlignItemsList(props) {
+export default function Comment(props) {
   const classes = useStyles();
-  // alert(JSON.stringify(props))
+  
+  const { comment: { body, user, guest, replies=[] }, commentType } = props
 
-  const authorName = props.comment.user ? props.comment.user.name : props.comment.guest.name
+  const authorName = user ? user.name : guest.name
+
+  const isReply = commentType === 'Reply'
+  const isMessage = commentType === 'Message'
+  const hasReplies = replies.length > 0
 
   return (
     <>
@@ -37,15 +83,16 @@ export default function AlignItemsList(props) {
                 className={classes.inline}
                 color="textPrimary"
               >
-                {props.comment.body}
+                {body}
               </Typography>
             </React.Fragment>
           }
-        />
+        />      
+        <CommentActions comment={props.comment} commentType={props.commentType}/>
       </ListItem>
 
-      {props.commentsType === 'messages' && props.comment.replies.length > 0 &&
-        <CommentList commentsType='replies' comments={props.comment.replies}/>}
+      {isMessage && hasReplies && <CommentList commentType='Reply' comments={replies}/>}
     </>
   );
 }
+

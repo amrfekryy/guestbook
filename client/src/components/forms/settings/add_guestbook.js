@@ -1,4 +1,4 @@
-import { ADDGUESTBOOK, UPDATEGUESTBOOK } from 'helpers/queries'
+import { ADDGUESTBOOK, UPDATEGUESTBOOK, DELETEGUESTBOOK } from 'helpers/queries'
 import { createSchema } from '../validationSchema'
 
 export const addGuestbook = {
@@ -46,4 +46,11 @@ export const updateGuestbook = {
       // style: {minWidth: '50ch'}
     },
   }
+}
+
+export const deleteGuestbook = {
+  name: 'deleteGuestbook',
+  text: 'Delete Guest Book',
+  mutation: DELETEGUESTBOOK,
+  success_message: 'Guest Book was deleted',
 }

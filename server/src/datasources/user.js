@@ -123,72 +123,77 @@ class UserAPI extends DataSource {
     return { success: true }
   }
 
-  async updateMessage({ messageId, body }) {
+  async updateMessage({ id, body }) {
     const { response, youAreNot } = this.notLoggedIn()
     if (youAreNot) return response
 
-    const message = await this.store.messages.findByPk(messageId);
+    const message = await this.store.messages.findByPk(id);
     message.body = body
     await message.save()
     
-    const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
-    return { success: true, message, guestbook }
+    // const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
+    return { success: true }
   }
-  async updateReply({ replyId, body }) {
+  async updateReply({ id, body }) {
     const { response, youAreNot } = this.notLoggedIn()
     if (youAreNot) return response
 
-    const reply = await this.store.replies.findByPk(replyId);
+    const reply = await this.store.replies.findByPk(id);
     reply.body = body
     await reply.save()
 
-    const message = await this.store.messages.findByPk(reply.dataValues.messageId);    
-    const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
-    return { success: true, reply, message, guestbook }
+    // const message = await this.store.messages.findByPk(reply.dataValues.messageId);    
+    // const guestbook = await this.store.guestbooks.findByPk(message.dataValues.guestbookId);
+    return { success: true }
   }
 
   extractIds(list) {
     return list.map(obj => obj.id)
   }
 
-  async deleteGuestbook({ guestbookId }) {
+  async deleteGuestbook({ id }) {
     // const { response, youAreNot } = this.notLoggedIn()
     // if (youAreNot) return response
-
+    
+    // get guestbook
+    const guestbook = await this.store.guestbooks.findByPk(id)
+    // get messages
     const generalAPI = new GeneralAPI({ store: this.store })
-    const { guestbook , messages } = await generalAPI.getGuestbookPage({ guestbookId })
-    
-    // get ids of related messages and replies
+    const messages = await generalAPI.getMessagesOf({ guestbookId: id })
+    // delete messages
     const messagesIds = this.extractIds(messages)
-    const repliesIds = messages.reduce((list, message) => {
-      return [...list, ...this.extractIds(message.replies)]
-    }, [])
-    
-    // delete related messages and replies
-    await repliesIds.map(async replyId => await this.deleteReply({ replyId }))
-    await messagesIds.map(async messageId => await this.deleteMessage({ messageId }))
-    
+    await messagesIds.map(async id => await this.deleteMessage({ id }))
     // delete guestbook
-    const guestbookDB = await this.store.guestbooks.findByPk(guestbook.id)
-    await guestbookDB.destroy()
+    await guestbook.destroy()
 
     return { success: true }
   }
 
-  async deleteMessage({ messageId }) {
+  async deleteMessage({ id }) {
     // const { response, youAreNot } = this.notLoggedIn()
     // if (youAreNot) return response
-
-    const message = await this.store.messages.findByPk(messageId)
+    
+    // get message
+    const message = await this.store.messages.findByPk(id)
+    // get replies
+    const generalAPI = new GeneralAPI({ store: this.store })
+    const replies = await generalAPI.getRepliesOf({ messageId: id })
+    // delete replies
+    const repliesIds = this.extractIds(replies)
+    await repliesIds.map(async id => await this.deleteReply({ id }))
+    // delete message
     await message.destroy()
+    
     return { success: true }
   }
-  async deleteReply({ replyId }) {
+
+  async deleteReply({ id }) {
     // const { response, youAreNot } = this.notLoggedIn()
     // if (youAreNot) return response
 
-    const reply = await this.store.replies.findByPk(replyId)
+    const reply = await this.store.replies.findByPk(id)
     await reply.destroy()
+    
     return { success: true }
   }
 
