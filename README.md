@@ -13,12 +13,12 @@ This is a fully CRUD capable application with signup and login system where user
 
 #### Authorities
 ###### A logged-in user can:
-- read all guestbooks including messages and replies
-- create a guestbook and update/delete owned guestbooks
+- Read all guestbooks including messages and replies
+- Create a guestbook and update/delete owned guestbooks
 - Add messages and replies to any guestbook
-- update/delete owned messages and replies
+- Update/delete owned messages and replies
 ###### A guest can:
-- read all guestbooks including messages and replies
+- Read all guestbooks including messages and replies
 - Add messages to any guestbook
 
 #### Technologies Used
@@ -28,3 +28,10 @@ This is a fully CRUD capable application with signup and login system where user
 - `Formik` for form handling and `Yup` for form validation
 - `Material UI` for user interface components and `Ant design` for notifications
 
+#### Features to be added
+- Allaw user to upload guestbook image
+- Adjust entry forms sizes
+- Improve aesthetics in general
+
+#### Known Bugs
+- Server error when deleting a guestbook from guestbook page
