@@ -10,12 +10,12 @@ export default class UserContextProvider extends React.Component {
     };
   }
 
-  login = ({ token, userId, userName, guestbooks, messages, replies }) => {
+  login = ({ token, userId, userName }) => {
     console.log({ token, userId, userName })
     localStorage.setItem("token", token)
     localStorage.setItem("userId", userId)
     localStorage.setItem("userName", userName)
-    this.setState({ user: { token, userId, userName, isLoggedIn: true, guestbooks, messages, replies } });
+    this.setState({ user: { token, userId, userName, isLoggedIn: true } });
   }
 
   logout = () => {

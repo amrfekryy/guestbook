@@ -74,9 +74,9 @@ const typeDefs = gql`
     addGuestbook(title: String, description: String): Response!
 
     addMessage(
-      userId: ID
       guestbookId: ID!
       body: String!
+      userId: ID
       guestName: String
       guestEmail: String
     ): Response!

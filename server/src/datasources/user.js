@@ -51,10 +51,10 @@ class UserAPI extends DataSource {
     const token = jwt.sign({...user.dataValues}, process.env.ACCESS_TOKEN_SECRET)
     const { id, name } = user['dataValues']
 
-    const generalAPI = new GeneralAPI({ store: this.store })
-    const { guestbooks, messages, replies } = await generalAPI.getUserData({ userId: id })
+    // const generalAPI = new GeneralAPI({ store: this.store })
+    // const { guestbooks, messages, replies } = await generalAPI.getUserData({ userId: id })
     // console.log({ guestbooks, messages, replies })
-    return {success: true, me: { id, name, email, guestbooks, messages, replies}, token}
+    return {success: true, me: { id, name, email }, token}
   }
 
   notLoggedIn() {

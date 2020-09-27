@@ -86,8 +86,8 @@ export default (props) => {
     login: (data) => {
       alert(JSON.stringify(data, null, 2));
 
-      const { token, me: { id, name, guestbooks, messages, replies } } = data[settings.name]
-      loginUser({ token, userId: id, userName: name, guestbooks, messages, replies })
+      const { token, me: { id, name } } = data[settings.name]
+      loginUser({ token, userId: id, userName: name })
       message.success(settings.success_message, 2, navigate(`/profile/${id}`))
     },
     signup: () => {
