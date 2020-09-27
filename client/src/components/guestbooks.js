@@ -6,6 +6,7 @@ import { UserContext } from 'containers/user_context'
 import { GETALLGUESTBOOKS, GETGUESTBOOKSOF } from 'helpers/queries'
 import { message } from 'antd'
 import { useQuery } from '@apollo/client'
+import EmptyCard from 'components/empty_card'
 
 export default function GuestbooksList(props) {
   const { userId, type } = props
@@ -16,13 +17,11 @@ export default function GuestbooksList(props) {
       query: GETALLGUESTBOOKS,
       variables: {},
       queryName: 'allGuestbooks',
-      empty_message: 'No Guestbooks Yet. Click Add Guestbook'
     },
     profile: {
       query: GETGUESTBOOKSOF,
       variables: { variables: { userId } },
       queryName: 'guestbooksOf',
-      empty_message: 'You Have No Guestbooks Yet. Click Add Guestbook'
     }
   }[type || 'home']
 
@@ -30,8 +29,8 @@ export default function GuestbooksList(props) {
   if (error) return message.error(error.message, 2);
   // if (loading) // do something
   const guestbooks = data && data[settings.queryName] ? data[settings.queryName] : []
-  if (data && guestbooks.length === 0) return message.info(settings.empty_message, 3);
   // alert(JSON.stringify(data))
+  const thereAreGuestbooks = data && guestbooks.length > 0
   return (
     <div>
       <Grid           
@@ -40,11 +39,14 @@ export default function GuestbooksList(props) {
         justify="center"
         spacing={3}
       >
-        {guestbooks.map(guestbook => 
-          <Grid item xs={12} sm={6} lg={4}>
-            <Card {...{ guestbook }}/>
-          </Grid>
-        )}
+        {thereAreGuestbooks ? 
+          guestbooks.map(guestbook => 
+            <Grid item xs={12} sm={6} lg={4}>
+              <Card {...{ guestbook }}/>
+            </Grid>
+          ) : <EmptyCard />
+        }
+
       </Grid>
     </div>
   );
