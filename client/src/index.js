@@ -1,15 +1,24 @@
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from "@apollo/client";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Pages from "./pages";
 import './index.css';
+import { ApolloClient, InMemoryCache, createHttpLink, ApolloProvider, gql } from "@apollo/client";
+import { setContext } from '@apollo/client/link/context';
 
+const httpLink = createHttpLink({ uri: 'http://localhost:4000/' });
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('token');
+  return {
+    headers: { ...headers, auth_token: token ? token : ""}
+  }
+});
 
 export const cache = new InMemoryCache()
 export const client = new ApolloClient({
-  uri: "http://localhost:4000/",
-  headers: { auth_token: localStorage.getItem('token') || ''},
+  link: authLink.concat(httpLink),
   cache,
+  // uri: "http://localhost:4000/",
+  // headers: { auth_token: localStorage.getItem('token') || ''},
 });
 
 ReactDOM.render(
