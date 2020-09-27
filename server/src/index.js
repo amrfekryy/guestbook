@@ -18,7 +18,7 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     // simple jwt auth check on every request
     const token = req.headers && req.headers.auth_token || '';
-    console.log('TOKEN', token)    
+    // console.log('TOKEN', token)    
     if (!token) return { user: null };
 
     const data = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded_token) => {
@@ -27,7 +27,7 @@ const server = new ApolloServer({
       if (!user) return { user: null };
       return { user: { ...user.dataValues } };
     })
-    console.log('CONTEXT', data)
+    // console.log('CONTEXT', data)
     return data
   },
 

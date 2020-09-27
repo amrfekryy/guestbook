@@ -36,7 +36,10 @@ const FormControl = (props) => {
             // set initialValues to empty strings 
             initialValues={Object.keys(settings.fields).reduce((obj, key) => ({...obj, [key]: currentValues[key] || ''}) , {})}
             validationSchema={settings.validationSchema || ''}
-            onSubmit={values => triggerMutation({ variables: { ...values , id: currentValues.id }})}
+            onSubmit={(values, { resetForm }) => {
+              triggerMutation({ variables: { ...values , id: currentValues.id }})
+              resetForm()
+            }}
           >
             <Form>
               <Grid
@@ -87,10 +90,10 @@ export default (props) => {
       // alert(JSON.stringify(data, null, 2));
       const { token, me: { id, name } } = data[settings.name]
       loginUser({ token, userId: id, userName: name })
-      message.success(settings.success_message, 2, navigate(`/profile/${id}`))
+      message.success(settings.success_message, 2, () => navigate(`/profile/${id}`))
     },
     signup: () => {
-      message.success(settings.success_message, 2, navigate('/login'))
+      message.success(settings.success_message, 2, () => navigate('/login'))
     },
     addGuestbook: () => {
       hideDrawer()
