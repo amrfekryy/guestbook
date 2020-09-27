@@ -6,7 +6,18 @@ import { useMutation } from '@apollo/client'
 import { useNavigate } from "@reach/router"
 import { UserContext } from 'containers/user_context'
 
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+
+
+
 export default function DeleteAction(props){
+  // confirmation dialog state
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+
   const settings = controls[props.settings]
 
   const { userId } = React.useContext(UserContext);
@@ -41,8 +52,27 @@ export default function DeleteAction(props){
   // if (loading) // do something
   if (error) return message.error(error.message, 2);
 
-  return <div onClick={ () => triggerMutation({ variables: { id: props.id }}) }>
-    {props.children}
-  </div>
+  return <>
+    <div onClick={ () => setShowConfirmation(true)}>
+      {props.children}
+    </div>
+    <Dialog
+      open={showConfirmation}
+      onClose={() => setShowConfirmation(false)}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+      <DialogActions>
+        <Button onClick={() => setShowConfirmation(false)} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={ () => triggerMutation({ variables: { id: props.id }}) } color="primary" autoFocus>
+          Proceed
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </>
 
 }
+
