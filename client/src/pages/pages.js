@@ -3,6 +3,7 @@ import Guestbook from 'components/guestbook'
 import FormControl from 'components/forms/form_control';
 import Guestbooks from 'components/guestbooks'
 import Header from 'components/header'
+import NothingHere from 'assets/travolta.gif'
 
 export const Page = (props) => <div><Header />{props.children}</div>
 
@@ -16,4 +17,5 @@ export const Login = () => <Page> <FormControl settings='login'/> </Page>
 
 export const GuestBook = (props) => <Page> <Guestbook guestbookId={props.guestbookId} /> </Page>
 
-export const NotFound = () => <Page> <div>Sorry, nothing here.</div> </Page>
+export const NotFound = () => <Page> 
+  <img src={NothingHere} alt="Nothing Here!" style={{ display:'block', margin:'auto'}}/> </Page>
