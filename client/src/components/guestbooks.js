@@ -15,19 +15,22 @@ export default function GuestbooksList(props) {
     home: {
       query: GETALLGUESTBOOKS,
       variables: {},
-      queryName: 'allGuestbooks'
+      queryName: 'allGuestbooks',
+      empty_message: 'No Guestbooks Yet. Click Add Guestbook'
     },
     profile: {
       query: GETGUESTBOOKSOF,
       variables: { variables: { userId } },
-      queryName: 'guestbooksOf'
+      queryName: 'guestbooksOf',
+      empty_message: 'You Have No Guestbooks Yet. Click Add Guestbook'
     }
   }[type || 'home']
 
   const { data, loading, error } = useQuery(settings.query, settings.variables);
   if (error) return message.error(error.message, 2);
   // if (loading) // do something
-  const allGuestbooks = data && data[settings.queryName] ? data[settings.queryName] : []
+  const guestbooks = data && data[settings.queryName] ? data[settings.queryName] : []
+  if (data && guestbooks.length === 0) return message.info(settings.empty_message, 3);
   // alert(JSON.stringify(data))
   return (
     <div>
@@ -37,7 +40,7 @@ export default function GuestbooksList(props) {
         justify="center"
         spacing={3}
       >
-        {allGuestbooks.map(guestbook => 
+        {guestbooks.map(guestbook => 
           <Grid item xs={12} sm={6} lg={4}>
             <Card {...{ guestbook }}/>
           </Grid>

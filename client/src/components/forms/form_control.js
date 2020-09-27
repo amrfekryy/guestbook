@@ -84,8 +84,7 @@ export default (props) => {
 
   const complete = {
     login: (data) => {
-      alert(JSON.stringify(data, null, 2));
-
+      // alert(JSON.stringify(data, null, 2));
       const { token, me: { id, name } } = data[settings.name]
       loginUser({ token, userId: id, userName: name })
       message.success(settings.success_message, 2, navigate(`/profile/${id}`))
