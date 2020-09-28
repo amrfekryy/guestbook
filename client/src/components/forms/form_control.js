@@ -50,18 +50,17 @@ const FormControl = (props) => {
                 spacing={3}
               >
                 {Object.keys(settings.fields).map(fieldName => {
-                  if (settings.fields[fieldName].skip)
-                    return <></>
                   const fieldProps = settings.fields[fieldName]
-                  return <Grid item xs={12}>
-                  <Field name={fieldName}>
-                    {({ field, meta }) => {
-                      const error = meta.touched && meta.error ? { error: true, helperText: meta.error } : null
-                      return <TextField variant="outlined" {...field} {...error} {...fieldProps} 
-                      inputProps={{defaultValue: currentValues[fieldName] || ''}}/>;
-                    }}
-                  </Field>
-                </Grid>
+                  return fieldProps.skip ? <></> : <Grid item xs={12}>
+                    <Field name={fieldName}>
+                      {({ field, meta }) => {
+                        const error = meta.touched && meta.error ? { error: true, helperText: meta.error } : null
+                        return <TextField variant="outlined" {...field} {...error} {...fieldProps} 
+                          inputProps={{defaultValue: currentValues[fieldName] || ''}}
+                        />;
+                      }}
+                    </Field>
+                  </Grid>
                 })}
                 
                 <Grid item xs={12}>
